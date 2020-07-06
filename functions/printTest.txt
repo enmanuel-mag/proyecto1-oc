@@ -1,132 +1,181 @@
-.data
-.data
-str1: .asciiz ": Vida "
-str2: .asciiz "Ataque: "
-str3: .asciiz "Ataca a "
 
-Line1:      .asciiz "pikachu\n"
-Line2:      .asciiz "dragonitej\n"
-nombres:.word Line1, Line2
-indices: .word 0,1
-vida: .float 5.0,5.0
-ataques: .float 1.0,2.0
-.text
+		.data
 
+str1: 		.asciiz ": Vida "
+str2: 		.asciiz "Ataque		: "
+str3: 		.asciiz "Ataca a "
+tab: 		.asciiz " "
+
+pokemon1:      .asciiz "pikachu"
+pokemon2:      .asciiz "dragonite"
+nombres:	.word pokemon1, pokemon2
+indices: 	.word 0,1
+vida: 		.float 5.0,5.0
+ataques: 	.float 1.0,2.0
+
+		.text
+		
 main:
 
 	la $a1, nombres	#$a1 -> arreglo
 	la $a0, indices	#$a0 -> arreglo de indices
 	la $a2, vida	#$a2 -> arreglo de vidas
 	la $a3, ataques	#$a3 -> arreglo de ataques
-	
-	jal print	#llamo a la funcion
 
-    	li $v0, 10
-    	syscall
+	jal print	#llamo a la funcion
+	
+	li $v0, 10
+	syscall
+
 
 index:
-	addi $sp, $sp, -4
+	addi $sp, $sp, -8
 	sw $t1, 0($sp)
+	sw $ra, 4($sp)
+
 	sll $t1, $a1, 2		#t1 toma el valor del $a1(indice) * 4
 	add $t1, $a0, $t1	#t1 toma el valor de la direccion de $a0(arreglo) mas $t1
 	lw $t1, 0($t1)		#t1 toma la direccion del elemento indexado
+
 	move $v0, $t1 		#retorno el valor indexado a $vo
+
 	lw $t1, 0($sp)
-	addi $sp, $sp, 4
+	lw $ra, 4($sp)
+	addi $sp, $sp, 8
+	
 	jr $ra
 
-#indices-> $t0, nombre -> $t1, vida ->$a2, ataque -> $a3
-print:
-	la $t0, ($a0)
-#	add $t0, $a0, $zero
-	la $t1, ($a1)
-#    	add $t1, $a1, $zero
+indexF:
+	addi $sp, $sp, -8
+	sw $t1, 0($sp)
+	sw $ra, 4($sp)
+
+	sll $t1, $a1, 2		#t1 toma el valor del $a1(indice) * 4
+	add $t1, $a0, $t1	#t1 toma el valor de la direccion de $a0(arreglo) mas $t1
+	l.s $f1, 0($t1)		#t1 toma la direccion del elemento indexado
+	mov.s $f0, $f1 		#retorno el valor indexado a $vo
 	
+	lw $t1, 0($sp)
+	lw $ra, 4($sp)
+	addi $sp, $sp, 8
+	
+	jr $ra
+	
+
+
+#indices-> $s0, nombre -> $s1, vida ->$a2, ataque -> $a3
+
+print:
+
+	addi $sp, $sp, -24
+	sw $s1, 0($sp)
+	sw $s0, 4($sp)
+	sw $ra, 8($sp)
+	sw $t1, 12($sp)
+	sw $t3, 16($sp)
+	sw $t4, 20($sp)
+
+	la $s0, ($a0)
+	la $s1, ($a1)
+
 	li $a1, 0
-	#add $a1, $zero, $zero       #i=indices[0] -> $t2
-#	move $a0, $t0
-#	add $a0, $t0, $zero
+	#la $a0, ($s0)
 	jal index
-	add $t2, $v0, $zero		#indice del atacante
-
-    	addi $a1, $zero, 1          #j=indices[1] -> $t3
-   	jal index
-	add $t3, $v0, $zero		#indice del atacdo
-
-    	add $a1, $t2, $zero          #$t4 -> nombre[i] atacante
-    	la $a0, ($t1)
-#    	add $a0, $t1, $zero
+	move $t2, $v0			#i=indices[0] -> $t2 indice del atacante.
+	
+    	la $a1, ($t2)
+    	la $a0, ($s1)
     	jal index
-	add $t4, $v0, $zero
+    	move $t4, $v0			#$t4 -> nombre[i] atacante
 
     	li $v0, 4
     	la $a0, ($t4)
-    	syscall
+    	syscall				#imprime el nombre de atacante
 
     	li $v0, 4
     	la $a0, str1
-    	syscall
+    	syscall				#imprime el testo de str1
 
-    	add $a1, $t2, $zero          #$t4 -> vida[i] del atacante
-    	add $a0, $a2, $zero
-    	jal index
-	add $t4, $v0, $zero
+    	la $a1, ($t2)
+    	la $a0, ($a2)
+    	jal indexF
+		mov.s $f12, $f0			#$t4 -> vida[i] del atacante
 
     	li $v0, 2
+    	syscall				#imprime vida del atacante
+
+    	li $v0, 4
+    	la $a0, tab
+    	syscall				#imprime una tabulacion
+    	
+    	li $v0, 4
+    	la $a0, str2
+    	syscall				#imprime texto en str2
+
+	la $a1, ($t2)
+	la $a0, ($a3)
+    	jal indexF
+	mov.s $f12, $f0			#$t4 -> ataque[i] atacante
+	
+	li $v0, 2
+	syscall				#imprime el ataque del atacante
+
+    	li $v0, 4
+    	la $a0, tab
+    	syscall				#imprime una tabulacion
+
+	li $v0, 4
+	la $a0, str3
+	syscall				#imprime texto en str3
+	
+	li $a1, 1
+	la $a0, ($s0)
+	jal index
+	move $t3, $v0			#j=indices[1] -> $t3 indice del atacado 
+	
+	la $a1, ($t3)		
+    	la $a0, ($s1)
+    	jal index
+    	move $t4, $v0			#$t4 -> nombre[i] atacado
+
+    	li $v0, 4
     	la $a0, ($t4)
-    	syscall
+    	syscall				#imprime el nombre de atacado
+
+    	li $v0, 4
+    	la $a0, str1
+    	syscall				#imprime el testo de str1
+
+    	la $a1, ($t3)
+    	la $a0, ($a2)
+    	jal indexF
+	mov.s $f12, $f0			#$t4 -> vida[i] del atacado
+
+    	li $v0, 4
+    	la $a0, tab
+    	syscall				#imprime una tabulacion
+
+    	li $v0, 2
+    	syscall				#imprime vida del atacado
 
     	li $v0, 4
     	la $a0, str2
-    	syscall
+    	syscall				#imprime texto en str2
 
-    	add $a1, $t2, $zero          #$t4 -> ataque[i] atacante
-    	add $a0, $a3, $zero
-    	jal index
-	add $t4, $v0, $zero
-
-    li $v0, 2
-    la $a0, ($t4)
-    syscall
-
-    li $v0, 4
-    la $a0, str3
-    syscall
-
-    add $a1, $t3, $zero          #$t4 -> nombre[j] atacado
-    la $a0, ($t1)
-    #add $a0, $t1, $zero
-    jal index
-	add $t4, $v0, $zero
-
-    li $v0, 4
-    la $a0, ($t4)
-    syscall
-
-    li $v0, 4
-    la $a0, str1
-    syscall
-
-    add $a1, $t3, $zero          #$t4 -> vida[j] atacado
-    add $a0, $a2, $zero
-    jal index
-	add $t4, $v0, $zero
-
-    li $v0, 2
-    la $a0, ($t4)
-    syscall
-
-    li $v0, 4
-    la $a0, str2
-    syscall
-
-    add $a1, $t3, $zero          #$t4 -> ataque[j] atacado
-    add $a0, $a3, $zero
-    jal index
-	add $t4, $v0, $zero
-    
-    li $v0, 2
-    add $a0, $zero, $t4
-    syscall
-    
-    jr $ra
+	la $a1, ($t3)
+	la $a0, ($a3)
+    	jal indexF
+	mov.s $f12, $f0			#$t4 -> ataque[i] atacado
+	
+	li $v0, 2
+	syscall				#imprime el ataque del atacado
+	
+	lw $s1, 0($sp)
+	lw $s0, 4($sp)
+	lw $ra, 8($sp)
+	lw $t1, 12($sp)
+	lw $t3, 16($sp)
+	lw $t4, 20($sp)
+	addi $sp, $sp, 24
+	
+	jr $ra

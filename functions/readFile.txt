@@ -29,7 +29,7 @@ read:
   # Read to file just opened  
   li $v0, 14       # system call for read to file
   la $a1, buffer   # address of buffer from which to write
-  li $a2, 1024       # hardcoded buffer length
+  li $a2, 1024    # hardcoded buffer length
   move $a0, $t0    # put the file descriptor in $a0		
   syscall          # write to file
 

@@ -1,0 +1,9 @@
+.data
+	salto: .asciiz "\n"	
+
+printLn:
+	
+	li $v0, 4  
+	la $a0, salto      
+    syscall 
+    jr $ra

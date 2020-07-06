@@ -1,7 +1,8 @@
 #   parameters:
 #   $a1 -> indice ; $a0 -> array ; 
 #   return memory direction to $v0
-index:
+
+index:			#indexar words
 	addi $sp, $sp, -4
 	sw $t1, 0($sp)
 	
@@ -14,3 +15,21 @@ index:
 	addi $sp, $sp, 4
 	
 	jr $ra			#retorno el flujo al main
+
+indexF:			indexar floats
+
+	addi $sp, $sp, -8
+	sw $t1, 0($sp)
+	sw $ra, 4($sp)
+
+	sll $t1, $a1, 2		#t1 toma el valor del $a1(indice) * 4
+	add $t1, $a0, $t1	#t1 toma el valor de la direccion de $a0(arreglo) mas $t1
+	l.s $f1, 0($t1)		#t1 toma la direccion del elemento indexado
+	mov.s $f0, $f1 		#retorno el valor indexado a $fo
+	
+	lw $t1, 0($sp)
+	lw $ra, 4($sp)
+	addi $sp, $sp, 8
+	
+	jr $ra
+	
