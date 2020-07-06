@@ -1,0 +1,128 @@
+.data
+.data
+str1: .asciiz ": Vida "
+str2: .asciiz "Ataque: "
+str3: .asciiz "Ataca a "
+
+Line1:      .asciiz "pikachu\n"
+Line2:      .asciiz "dragonitej\n"
+nombres:.word Line1, Line2
+indices: .word 0,1
+vida: .float 5.0,5.0
+ataques: .float 1.0,2.0
+.text
+
+main:
+
+	la $a1, nombres	#$a1 -> arreglo
+	la $a0, indices	#$a0 -> arreglo de indices
+	la $a2, vida	#$a2 -> arreglo de vidas
+	la $a3, ataques	#$a3 -> arreglo de ataques
+	
+	jal print	#llamo a la funcion
+
+    	li $v0, 10
+    	syscall
+
+index:
+	sll $t1, $a1, 2
+	add $t1, $a0, $t1
+	lw $t1, 0($t1)
+	move $v0, $t1 
+	jr $ra
+
+#indices-> $t0, nombre -> $t1, vida ->$a2, ataque -> $a3
+print:
+	la $t0, ($a0)
+#	add $t0, $a0, $zero
+	la $t1, ($a1)
+#    	add $t1, $a1, $zero
+	
+	li $a1, 0
+	#add $a1, $zero, $zero       #i=indices[0] -> $t2
+#	move $a0, $t0
+#	add $a0, $t0, $zero
+	jal index
+	add $t2, $v0, $zero		#indice del atacante
+
+    	addi $a1, $zero, 1          #j=indices[1] -> $t3
+   	jal index
+	add $t3, $v0, $zero		#indice del atacdo
+
+    	add $a1, $t2, $zero          #$t4 -> nombre[i] atacante
+    	la $a0, ($t1)
+#    	add $a0, $t1, $zero
+    	jal index
+	add $t4, $v0, $zero
+
+    	li $v0, 4
+    	la $a0, ($t4)
+    	syscall
+
+    	li $v0, 4
+    	la $a0, str1
+    	syscall
+
+    	add $a1, $t2, $zero          #$t4 -> vida[i] del atacante
+    	add $a0, $a2, $zero
+    	jal index
+	add $t4, $v0, $zero
+
+    	li $v0, 2
+    	la $a0, ($t4)
+    	syscall
+
+    	li $v0, 4
+    	la $a0, str2
+    	syscall
+
+    	add $a1, $t2, $zero          #$t4 -> ataque[i] atacante
+    	add $a0, $a3, $zero
+    	jal index
+	add $t4, $v0, $zero
+
+    li $v0, 2
+    la $a0, ($t4)
+    syscall
+
+    li $v0, 4
+    la $a0, str3
+    syscall
+
+    add $a1, $t3, $zero          #$t4 -> nombre[j] atacado
+    la $a0, ($t1)
+    #add $a0, $t1, $zero
+    jal index
+	add $t4, $v0, $zero
+
+    li $v0, 4
+    la $a0, ($t4)
+    syscall
+
+    li $v0, 4
+    la $a0, str1
+    syscall
+
+    add $a1, $t3, $zero          #$t4 -> vida[j] atacado
+    add $a0, $a2, $zero
+    jal index
+	add $t4, $v0, $zero
+
+    li $v0, 2
+    la $a0, ($t4)
+    syscall
+
+    li $v0, 4
+    la $a0, str2
+    syscall
+
+    add $a1, $t3, $zero          #$t4 -> ataque[j] atacado
+    add $a0, $a3, $zero
+    jal index
+	add $t4, $v0, $zero
+    
+    li $v0, 2
+    add $a0, $zero, $t4
+    syscall
+    
+    jr $ra

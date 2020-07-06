@@ -1,0 +1,9 @@
+#   parameters:
+#   $a1 -> indice ; $a0 -> array ; 
+#   return memory direction to $v0
+index:
+sll $t1, $a1, 2
+add $t1, $a0, $t1
+lw $t1, 0($t1)
+move $v0, $t1 
+jr $ra
