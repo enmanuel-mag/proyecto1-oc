@@ -83,46 +83,46 @@ print:
 	jal index
 	move $t2, $v0			#i=indices[0] -> $t2 indice del atacante.
 	
-    	la $a1, ($t2)
-    	la $a0, ($s1)
-    	jal index
-    	move $t4, $v0			#$t4 -> nombre[i] atacante
+    la $a1, ($t2)
+    la $a0, ($s1)
+    jal index
+    move $t4, $v0			#$t4 -> nombre[i] atacante
 
-    	li $v0, 4
-    	la $a0, ($t4)
-    	syscall				#imprime el nombre de atacante
+    li $v0, 4
+    la $a0, ($t4)
+    syscall				#imprime el nombre de atacante
 
-    	li $v0, 4
-    	la $a0, str1
-    	syscall				#imprime el testo de str1
+    li $v0, 4
+    la $a0, str1
+    syscall				#imprime el testo de str1
 
-    	la $a1, ($t2)
-    	la $a0, ($a2)
-    	jal indexF
-		mov.s $f12, $f0			#$t4 -> vida[i] del atacante
+    la $a1, ($t2)
+    la $a0, ($a2)
+    jal indexF
+	mov.s $f12, $f0			#$t4 -> vida[i] del atacante
 
-    	li $v0, 2
-    	syscall				#imprime vida del atacante
+    li $v0, 2
+    syscall				#imprime vida del atacante
 
-    	li $v0, 4
-    	la $a0, tab
-    	syscall				#imprime una tabulacion
-    	
-    	li $v0, 4
-    	la $a0, str2
-    	syscall				#imprime texto en str2
+    li $v0, 4
+    la $a0, tab
+    syscall				#imprime una tabulacion
+    
+    li $v0, 4
+    la $a0, str2
+    syscall				#imprime texto en str2
 
 	la $a1, ($t2)
 	la $a0, ($a3)
-    	jal indexF
+    jal indexF
 	mov.s $f12, $f0			#$t4 -> ataque[i] atacante
 	
 	li $v0, 2
 	syscall				#imprime el ataque del atacante
 
-    	li $v0, 4
-    	la $a0, tab
-    	syscall				#imprime una tabulacion
+    li $v0, 4
+    la $a0, tab
+    syscall				#imprime una tabulacion
 
 	li $v0, 4
 	la $a0, str3
@@ -134,33 +134,33 @@ print:
 	move $t3, $v0			#j=indices[1] -> $t3 indice del atacado 
 	
 	la $a1, ($t3)		
-    	la $a0, ($s1)
-    	jal index
-    	move $t4, $v0			#$t4 -> nombre[i] atacado
+    la $a0, ($s1)
+    jal index
+    move $t4, $v0			#$t4 -> nombre[i] atacado
 
-    	li $v0, 4
-    	la $a0, ($t4)
-    	syscall				#imprime el nombre de atacado
+    li $v0, 4
+    la $a0, ($t4)
+    syscall				#imprime el nombre de atacado
 
-    	li $v0, 4
-    	la $a0, str1
-    	syscall				#imprime el testo de str1
+    li $v0, 4
+    la $a0, str1
+    syscall				#imprime el testo de str1
 
-    	la $a1, ($t3)
-    	la $a0, ($a2)
-    	jal indexF
+    la $a1, ($t3)
+    la $a0, ($a2)
+    jal indexF
 	mov.s $f12, $f0			#$t4 -> vida[i] del atacado
 
-    	li $v0, 4
-    	la $a0, tab
-    	syscall				#imprime una tabulacion
+    li $v0, 4
+    la $a0, tab
+    syscall				#imprime una tabulacion
 
-    	li $v0, 2
-    	syscall				#imprime vida del atacado
+    li $v0, 2
+    syscall				#imprime vida del atacado
 
-    	li $v0, 4
-    	la $a0, str2
-    	syscall				#imprime texto en str2
+    li $v0, 4
+    la $a0, str2
+    syscall				#imprime texto en str2
 
 	la $a1, ($t3)
 	la $a0, ($a3)
