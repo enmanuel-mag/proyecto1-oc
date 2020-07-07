@@ -1,0 +1,17 @@
+.data
+wel: .asciiz "Bienvenido al sistema de combates Pokemon:\n"
+
+.text
+
+.globl main
+
+main:
+	li $v0, 4
+	la $a0, wel
+	syscall
+	
+	
+	#SE TERMINO EL PROGRAMA POR FIN
+	li, $v0, 10
+	syscall
+	
