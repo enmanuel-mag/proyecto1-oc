@@ -5,7 +5,7 @@
 
 printLn:
 
-	li $v0, 4  
+	li $v0, 4  	#PRINTLN
 	syscall
 	li $v0, 4
 	la $a0, salto      
