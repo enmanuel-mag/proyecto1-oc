@@ -1,3 +1,29 @@
+ .data
+str1:       .asciiz     "josue cobos\n\0holi"
+strCopyBuffer:       .space     4
+    .text
+    .globl  main
+main:
+
+	la $a0, str1
+	la $a1, strCopyBuffer
+	jal stringCopy
+	
+	la $a0, ($v0)
+	li $v0,4
+	syscall
+	
+	la $a0, ($v1)
+	la $a1, strCopyBuffer
+	jal stringCopy
+	
+	la $a0, ($v0)
+	li $v0,4
+	syscall
+	
+	move $t4, $v0
+	li $v0, 10
+	syscall
 
 #$a0 -> direccion string 
 #$a1 -> CopystrCopyBufferbuffer
