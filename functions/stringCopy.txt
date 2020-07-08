@@ -1,4 +1,3 @@
-
 #$a0 -> direccion string 
 #$a1 -> CopystrCopyBufferbuffer
 #$v0 -> direccion del string copiado
@@ -7,8 +6,9 @@ stringCopy:####################No se puede copiar un string de exceda la capacid
 	addi $sp, $sp, -16
 	sw $a0, 0($sp)
 	sw $t0, 4($sp)
-	sw $ra, 8($sp)
-	sw $t1, 12($sp)
+	sw $t1, 8($sp)
+	sw $ra, 12($sp)
+	
 	
 	la $t1, ($a1)
 	copyCharLoop:
@@ -28,8 +28,9 @@ stringCopy:####################No se puede copiar un string de exceda la capacid
 	
 	lw $a0, 0($sp)
 	lw $t0, 4($sp)
-	lw $ra, 8($sp)
-	lw $t1, 12($sp)
+	lw $t1, 8($sp)
+	lw $ra, 12($sp)
 	addi $sp, $sp, 16
+	
 	jr $ra
 	

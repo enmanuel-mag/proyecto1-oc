@@ -1,49 +1,50 @@
-# Sample MIPS program that read a file.
-#   
-
-        .data
-fout:   .asciiz "C:\\code\\oc\\proyecto1-oc\\functions\\file.txt"      # filename for output
-buffer: .space 1024
-        .text
-
-main:
-
-  la $a0, fout
-  jal read
-  
-  la $a0, ($v0)
-  li $v0, 4
-  syscall
-  
-  li $v0, 10
-  syscall
-
+# $a0 -> string ruta
+# $a1 -> buffer de lectura
+# $a2 -> tamaño del buffer en bytes
+# $v0 -> buffer con el contenido leido
 read:
-  # Open (for reading) a file
-  li $v0, 13       # system call for open file
-  li $a1, 0        # flags
-  syscall          # open a file (file descriptor returned in $v0)
+	addi $sp, $sp, -32
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $a0, 16($sp)
+	sw $a1, 20($sp)
+	sw $a2, 24($sp)
+	sw $ra, 28($sp)
 
-  move $t0, $v0    # save file descriptor in $t0		
-  
-  # Read to file just opened  
-  li $v0, 14       # system call for read to file
-  la $a1, buffer   # address of buffer from which to write
-  li $a2, 1024    # hardcoded buffer length
-  move $a0, $t0    # put the file descriptor in $a0		
-  syscall          # write to file
+	la $t1, ($a0)
+	la $t2, ($a1)
+	la $t3, ($a2)
+	
+  	# Open (for reading) a file
+  	li $v0, 13       # system call for open file
+  	li $a1, 0        # flags
+  	syscall          # open a file (file descriptor returned in $v0)
 
-  # Get the value from certain address
+  	move $t0, $v0    # save file descriptor in $t0		
+  	# Read to file just opened  
+  	li $v0, 14       # system call for read to file
+  	la $a1, ($t2)   # address of buffer from which to write
+  	move $a2, $t3   # hardcoded buffer length
+  	move $a0, $t0    # put the file descriptor in $a0		
+  	syscall          # read from file
 
-#  li $v0, 4		# print the string out
-#  syscall  
+ 	 # Close the file 
+  	li $v0, 16       # system call for close file
+  	move $a0, $t0    # Restore fd
+  	syscall          # close file
 
-  # Close the file 
-  li $v0, 16       # system call for close file
-  move $a0, $t0    # Restore fd
-  syscall          # close file
-
-  la $v0, buffer #load the address into $a0
-  jr $ra
-#  li $v0, 10 		# end the file
-#  syscall 
+  	la $v0, ($t2)
+  	
+  	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $a0, 16($sp)
+	sw $a1, 20($sp)
+	sw $a2, 24($sp)
+	sw $ra, 28($sp)
+	addi $sp, $sp, 32
+	
+  	jr $ra
