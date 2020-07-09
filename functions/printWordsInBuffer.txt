@@ -1,15 +1,17 @@
 #$a0 direccion del buffer
 #$a1 cantidad de elementos
+#$a2 item inicio -----------empieza en 0
 printWordsInBuffer:
 
-	addi $sp, $sp, -28
+	addi $sp, $sp, -32
 	sw $t0, 0($sp)
 	sw $t1, 4($sp)
 	sw $t2, 8($sp)
 	sw $a0, 12($sp)
 	sw $a1, 16($sp)
 	sw $v0, 20($sp)
-	sw $ra, 24($sp)
+	sw $a2, 24($sp)
+	sw $ra, 28($sp)
 
 	li $t0, 0 #elementos impresos
 	li $t2, 0 #indice el buffer
@@ -17,11 +19,12 @@ printWordsInBuffer:
 		slt $t1, $t0, $a1
 		bne $t1, 1, todosImpresos 
 		
-		sll $t2, $t0, 2
+		sll $t2, $t0, 5
 		add $a0, $a0, $t2
 		
 		li $v0, 4
 		syscall
+		jal printLn
 		
 		addi $t0, $t0, 1
 		
@@ -33,7 +36,21 @@ printWordsInBuffer:
 		lw $a0, 12($sp)
 		lw $a1, 16($sp)
 		lw $v0, 20($sp)
-		lw $ra, 24($sp)
-		addi $sp, $sp, 28
+		lw $a2, 24($sp)
+		lw $ra, 28($sp)
+		addi $sp, $sp, 32
 		jr $ra	
 	
+printLn:
+	addi $sp, $sp, -8
+	sw $v0, 0($sp)
+	sw $a0, 4($sp)
+	
+	li $v0, 11 
+	la $a0, '\n'      
+    	syscall
+    	
+    	lw $v0, 0($sp)
+	lw $a0, 4($sp)
+	addi $sp, $sp, 8
+    	jr $ra

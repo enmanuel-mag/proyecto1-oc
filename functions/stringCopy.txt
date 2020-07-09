@@ -3,7 +3,7 @@
 #$a2 -> Caracter hasta el cual buscar: caracteres $zero -> \0 ; \n
 #$v0 -> direccion del string copiado
 #$v1 -> direccion despues de haber encontrado el separdor 
-stringSection:####################Secciona un string desde el inio hasta que encuentre un separador
+stringSection:####################No se puede copiar un string de exceda la capacidad de un registro
 	addi $sp, $sp, -24
 	sw $a0, 0($sp)
 	sw $a1, 4($sp)
