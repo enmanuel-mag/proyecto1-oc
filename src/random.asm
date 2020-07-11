@@ -1,13 +1,13 @@
+#Funcion que retorna un numero aleatorio entre 0 y 99
 .text
 
 .globl random
 
 random:
     
-    li $a1, 99 #RANDOM Here you set $a1 to the max bound.
-    li $v0, 42 #generates the random number.
+    li $a1, 99 
+    li $v0, 42 
     syscall
-    #add $a0, $a0, 100  #Here you add the lowest bound
     
     move $v0, $a0
     
