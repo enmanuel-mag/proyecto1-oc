@@ -14,11 +14,13 @@ stringSection:####################No se puede copiar un string de exceda la capa
 	sw $ra, 20($sp)
 	
 	la $t1, ($a1)
+	li $t2, 13
 	copyCharLoop:
 		lb      $t0,($a0)                   # get next char from str1
 		
-		beq     $t0,$a2,endOfSection             # at End Of String? yes, fly (strings equal)
-		beq     $t0,$zero,endOfSection             # at End Of String? yes, fly (strings equal)
+		beq     $t0,$a2,endOfSection             # encontro el separador
+		beq     $t0,$t2,endOfSection             # enter caracter (0d)
+		beq     $t0,$zero,endOfSection             # final del string (0)
 		
 		sb      $t0, ($a1)                   # store next char to $t1
 	
@@ -26,6 +28,8 @@ stringSection:####################No se puede copiar un string de exceda la capa
 	 	addi    $a1,$a1,1                   # point to next char
 		j copyCharLoop
 	endOfSection:
+	sb      $0, ($a1)                   # store 0\ fin de string
+	
 	la $v0, ($t1)				#retorna la direccion del string coppia
 	addi    $a0,$a0,1                   # me salto el nullo y entrego la nueva direccion
 	la $v1, ($a0)				#retorna la direccion del string original avanzado 1 caracter

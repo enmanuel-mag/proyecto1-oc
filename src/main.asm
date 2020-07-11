@@ -1,7 +1,7 @@
 .data
 wel: .asciiz "Bienvenido al sistema de combates Pokemon:"
 pokeTypePath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\pokeTypes.txt"
-onlyTypesPath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\types.txt"
+onlyTypesPath: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\types.txt"
 pokeTypeBuffer: .space 1821
 pokeTypesArray: .space 3456
 tipo: .asciiz "normal"
@@ -20,12 +20,17 @@ main:
 	li $a3, 18
 	jal stringSplitBy
 	
-	#la $a0, pokeTypesArray
-	#addi $t1, $t0, 10
-	#li $a1, 18
-	#li $a2, 0
-	#jal printWordsInBuffer
+	la $a0, pokeTypesArray
+	addi $t1, $t0, 10
+	li $a1, 18
+	li $a2, 0
+	jal printWordsInBuffer
 		
+
+	la $a0, pokeTypesArray
+	li $v0, 4
+	syscall
+	
 	la $a0, pokeTypesArray
 	la $a1, tipo	
 	
