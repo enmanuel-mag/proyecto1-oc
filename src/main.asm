@@ -4,7 +4,7 @@ pokeTypePath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\pokeTypes.txt"
 onlyTypesPath: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\types.txt"
 pokeTypeBuffer: .space 1821
 pokeTypesArray: .space 3456
-tipo: .asciiz "normal"
+tipo: .asciiz "fight"
 .text
 .globl main
 
@@ -20,27 +20,22 @@ main:
 	li $a3, 18
 	jal stringSplitBy
 	
+	#la $a0, pokeTypesArray
+	#addi $t1, $t0, 10
 	la $a0, pokeTypesArray
-	addi $t1, $t0, 10
 	li $a1, 18
 	li $a2, 0
 	jal printWordsInBuffer
-		
 
-	la $a0, pokeTypesArray
-	li $v0, 4
-	syscall
+	#la $t0, pokeTypesArray
+	#addi $t2, $t0, 32
+	#la $a0, ($t2)
+	#li $v0, 4
+	#syscall
 	
-	la $a0, pokeTypesArray
-	la $a1, tipo	
-	
-	jal stringCompare
-	
-	jal strIndexOf
-	
-	la $a0, ($v1)
-	li $v0, 4
-	syscall
+	#la $a0, pokeTypesArray
+	#la $a1, tipo
+	#jal strIndexOf
 	
 	la $a0, pokeTypePath
 	la $a1, pokeTypeBuffer
