@@ -1,66 +1,67 @@
 .data
 wel: .asciiz "Bienvenido al sistema de combates Pokemon:"
-pokeTypePath: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\pokeTypes.txt"
+
+onlyTypesPath_j: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\data\\types.txt"
+onlyTypesPath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\types.txt"
+onlyTypeBuffer: .space 130
+onlyTypeArray: .space 576
+
+pokeMatrixPath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\matriz.txt"
+pokeMatrixBuffer: .space 790
+pokeMatrixArray: .space 576
+
+pokeTypePath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\pokeTypes.txt"
 pokeTypeBuffer: .space 1821
-pokeTypesArray: .space 3456
+pokeTypeArray: .space 3456
 
-onlyTypesPath: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\types.txt"
-onlyTypeBuffer: .space 577
-onlyTypeArray: .space 1000
 
-tipo: .asciiz "normal"
+
+tipo: .asciiz "fight"
+
 .text
 .globl main
 
 main:
-	#funciona lectura
+	#Lectura del archivo de solo los tipos
 	la $a0, onlyTypesPath
 	la $a1, onlyTypeBuffer
-	li $a2, 1000
+	li $a2, 130
 	jal read
-	
-	#funciona escritura
+	#Creacion del array con el contenido de solo los tipos
 	la $a0, onlyTypeBuffer
 	la $a1, onlyTypeArray
-	li $a2, '\n' 
+	li $a2, '\n'
 	li $a3, 18
 	jal stringSplitBy
 	
-	#prubea del array 
-	#la $t0, onlyTypeArray
-	#addi $a0, $t0, 32
-	#li $v0, 4
-	#syscall
 	
-	#funciona la impresion
-	#la $a0, onlyTypeArray
-	#li $a1, 18 #elemento final
-	#li $a2, 8 #elemento inicial(incia 0)
-	#jal printWordsInBuffer
-
-	la $a0, onlyTypeArray
-	la $a1, tipo
-	jal strIndexOf
+	#Lectura del archivo matrix
+	la $a0, pokeMatrixPath
+	la $a1, pokeMatrixBuffer
+	li $a2, 790
+	#Creacion del array con el contenido de la matrix
+	la $a0, pokeMatrixBuffer
+	la $a1, pokeMatrixArray
+	li $a2, '\n'
+	li $a3, 18
+	jal stringSplitBy
 	
-	#prueba de que encuentra lo que debe
-	la $a0 , ($v0)
-	li $v0 , 1
-	syscall
-	la $a0 , ($v1)
-	li $v0 , 4
-	syscall
-	
-	###############main
+	#Lectura del archivo pokeTypes
 	la $a0, pokeTypePath
 	la $a1, pokeTypeBuffer
 	li $a2, 1821
-	jal read
+	#Creacion del array con el contenido de pokeTypes
+	la $a0, pokeTypeBuffer
+	la $a1, pokeTypeArray
+	li $a2, '\n'
+	li $a3, 108
+	jal stringSplitBy
 	
 	jal random
 	move $t0, $v0
+	addi $t1, $t0, 9
 	
-	la $a0, pokeTypesArray
-	addi $t1, $t0, 10
+	la $a0, pokeTypeArray
 	move $a1, $t1
 	move $a2, $t0
 	jal printWordsInBuffer
