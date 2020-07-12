@@ -26,7 +26,7 @@ stringSplitBy:
 		slt $t1, $t0, $a3
 		beq $t1, $0, elementosCopiados
 		
-		sll $t2, $t0, 5 	#nuevo indice del buffer (multiplo de 4)
+		sll $t2, $t0, 6 	#nuevo indice del buffer (multiplo de 4)
 		add $a1, $a1, $t2	#preparo la nueva direccion
 		jal stringSection
 		#preparo la sgt llamda

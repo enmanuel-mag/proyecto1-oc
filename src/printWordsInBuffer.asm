@@ -25,7 +25,7 @@ printWordsInBuffer:
 		slt $t1, $t0, $a1
 		bne $t1, 1, todosImpresos 
 	if: 
-		sll $t2, $t0, 5
+		sll $t2, $t0, 6
 		add $a0, $a0, $t2
 		
 		slt $t1, $t0, $a2 #comparacion por piso
