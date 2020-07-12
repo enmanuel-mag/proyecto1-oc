@@ -1,5 +1,5 @@
 #$a0 direccion del buffer
-#$a1 cantidad de elementos
+#$a1 cantidad de elementos #funciona bien no se toca
 #$a2 item inicio -----------empieza en 0
 
 .globl printWordsInBuffer
@@ -24,21 +24,21 @@ printWordsInBuffer:
 	printLoop: 
 		slt $t1, $t0, $a1
 		bne $t1, 1, todosImpresos 
-
-if: 
+	if: 
 		sll $t2, $t0, 5
 		add $a0, $a0, $t2
 		
-		slt $t1, $t0, $a2
+		slt $t1, $t0, $a2 #comparacion por piso
+		beq $t1, 1, fueraRango
+		slt $t1, $a1, $t0#comparacion por techo
 		beq $t1, 1, fueraRango
 		
 		li $v0, 4
 		syscall
 		jal printLn
 
-fueraRango:		
+	fueraRango:		
 		addi $t0, $t0, 1
-		
 		j printLoop
 	todosImpresos:
 		lw $t0, 0($sp)

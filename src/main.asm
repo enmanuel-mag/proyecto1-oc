@@ -1,30 +1,40 @@
 .data
 wel: .asciiz "Bienvenido al sistema de combates Pokemon:"
-pokeTypePath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\pokeTypes.txt"
-onlyTypesPath: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\types.txt"
+pokeTypePath: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\pokeTypes.txt"
 pokeTypeBuffer: .space 1821
 pokeTypesArray: .space 3456
-tipo: .asciiz "fight"
+
+onlyTypesPath: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\types.txt"
+onlyTypeBuffer: .space 577
+onlyTypeArray: .space 1000
+
 .text
 .globl main
 
 main:
+	#funciona lectura
 	la $a0, onlyTypesPath
-	la $a1, pokeTypeBuffer
-	li $a2, 1821
+	la $a1, onlyTypeBuffer
+	li $a2, 1000
 	jal read
 	
-	la $a0, pokeTypeBuffer
-	la $a1, pokeTypesArray
-	li $a2, '\n'
+	#funciona escritura
+	la $a0, onlyTypeBuffer
+	la $a1, onlyTypeArray
+	li $a2, '\n' 
 	li $a3, 18
 	jal stringSplitBy
 	
-	#la $a0, pokeTypesArray
-	#addi $t1, $t0, 10
-	la $a0, pokeTypesArray
-	li $a1, 18
-	li $a2, 0
+	#prubea del array 
+	#la $t0, onlyTypeArray
+	#addi $a0, $t0, 32
+	#li $v0, 4
+	#syscall
+	
+	#funciona la impresion
+	la $a0, onlyTypeArray
+	li $a1, 18 #elemento final
+	li $a2, 8 #elemento inicial
 	jal printWordsInBuffer
 
 	#la $t0, pokeTypesArray
