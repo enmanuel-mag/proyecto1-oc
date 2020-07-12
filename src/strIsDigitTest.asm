@@ -8,7 +8,7 @@
 		li $a1, 20
 		syscall
 		
-		jal strIsDigit
+		jal stringToInt
 		
 		move $t7, $v0
 		li $v0, 1
