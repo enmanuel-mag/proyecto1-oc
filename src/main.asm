@@ -8,6 +8,7 @@ onlyTypesPath: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proy
 onlyTypeBuffer: .space 577
 onlyTypeArray: .space 1000
 
+tipo: .asciiz "normal"
 .text
 .globl main
 
@@ -32,21 +33,24 @@ main:
 	#syscall
 	
 	#funciona la impresion
-	la $a0, onlyTypeArray
-	li $a1, 18 #elemento final
-	li $a2, 8 #elemento inicial
-	jal printWordsInBuffer
+	#la $a0, onlyTypeArray
+	#li $a1, 18 #elemento final
+	#li $a2, 8 #elemento inicial(incia 0)
+	#jal printWordsInBuffer
 
-	#la $t0, pokeTypesArray
-	#addi $t2, $t0, 32
-	#la $a0, ($t2)
-	#li $v0, 4
-	#syscall
+	la $a0, onlyTypeArray
+	la $a1, tipo
+	jal strIndexOf
 	
-	#la $a0, pokeTypesArray
-	#la $a1, tipo
-	#jal strIndexOf
+	#prueba de que encuentra lo que debe
+	la $a0 , ($v0)
+	li $v0 , 1
+	syscall
+	la $a0 , ($v1)
+	li $v0 , 4
+	syscall
 	
+	###############main
 	la $a0, pokeTypePath
 	la $a1, pokeTypeBuffer
 	li $a2, 1821
