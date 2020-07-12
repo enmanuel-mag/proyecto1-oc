@@ -1,9 +1,5 @@
 .data
-	message:	.asciiz "Hello, "
-	isNotADigit:	.asciiz "Not a digit"
-	isADigit:	.asciiz "You enter a digit"
 	userInput:	.space 20
-	salto: 		.asciiz "\n"
 .text
 	main:
 		# Getting text from the user
@@ -25,8 +21,7 @@
 
 
 strIsDigit:
-	#Reservar memoria
-    	addi $sp, $sp, -24  #(6*4)
+	addi $sp, $sp, -24  #(6*4)
     	sw $t0, 0($sp)
     	sw $t1, 4($sp)
     	sw $t2, 8($sp)
@@ -34,36 +29,23 @@ strIsDigit:
     	sw $a0, 16($sp)
     	sw $ra, 20($sp)
     
-    	
-    	la $t0, ($a0)
-    	#inicializo i en t1
-    	li $t3, 0
-    	
-    	# variable para el and
-    	li $t2, 1
+    	la $t0, ($a0) #copio la direccion de a0
+    	li $t3, 0 #indice del char iterado
+    	li $t2, 1 #de entrada asumo que es str
     do:
     	# obtener el valor
     	add $t1, $t3, $t0
     	lb $t1, 0($t1)
-    	
-    	move $a0, $t1
-    	
-    	    	
+    	move $a0, $t1  	
     while:
-    	
-    	jal isNewLine
-    	beq $v0, 1, endStrIsDigit
-    	
     	jal isDigit
     	and $t2, $t2, $v0
+    	beq $v0, 0, endStrIsDigit
     	
     	addi $t3, $t3, 1
     	j do
-    	
     endStrIsDigit:
     	move $v0, $t2
-    	
-    	#Reservar memoria
     	
     	lw $t0, 0($sp)
     	lw $t1, 4($sp)
@@ -74,38 +56,7 @@ strIsDigit:
     	addi $sp, $sp, 24
     	
     	jr $ra
-
-
-isNewLine:
-	#Reservar memoria
-    	addi $sp, $sp, -16  #(3*4)
-    	sw $s0, 0($sp)
-    	sw $t0, 4($sp)
-    	sw $a0, 8($sp)
-    	sw $ra, 12($sp)
-    	
-    	li $s0, '\n'
-    	beq $a0, $s0, then
-
-    	li $t0, 0
-    	move $v0, $t0
-    	j endIsNewLine
-    	
-    then:
-    	li $t0, 1
-    	move $v0, $t0
-    
-    endIsNewLine:
-    	#liberar la memoria
-    	lw $s0, 0($sp)
-    	lw $t0, 4($sp)
-    	lw $a0, 8($sp)
-    	lw $ra, 12($sp)
-    	addi $sp, $sp, 16   #(1*4)
-    	
-    	jr $ra
-    	
-
+ 
 isDigit:
 	#Reservar memoria
     	addi $sp, $sp, -12  #(1*4)
@@ -115,23 +66,18 @@ isDigit:
 	
 	li  $t0, '0'
 	bltu   $a0 ,$t0, notdig        # Jump if char < '0'
-		
 	li $t0, '9'
 	bltu   $t0 ,$a0, notdig       # Jump if '9' < char
 	
 	li $t0, 1
     	move $v0, $t0
 	j endIsDigit
-	
     notdig:
 	li $t0, 0
     	move $v0, $t0
-    		
     endIsDigit:
-    	#liberar la memoria
     	lw $t0, 0($sp)
     	lw $a0, 4($sp)
     	lw $ra, 8($sp)
-    	addi $sp, $sp, 12   #(2*4)
-    	
+    	addi $sp, $sp, 12
     	jr $ra
