@@ -1,3 +1,5 @@
+.globl strIsDigit
+
 strIsDigit:
 	addi $sp, $sp, -24  #(6*4)
     	sw $t0, 0($sp)
@@ -9,7 +11,7 @@ strIsDigit:
     
     	la $t0, ($a0) #copio la direccion de a0
     	li $t3, 0 #indice del char iterado
-    	li $t2, 1 #de entrada asumo que es str
+    	li $t2, 1 #de entrada asumo que es digit
     do:
     	# obtener el valor
     	add $t1, $t3, $t0
