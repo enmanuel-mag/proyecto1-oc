@@ -1,7 +1,8 @@
 .data
 wel: .asciiz "Bienvenido al sistema de combates Pokemon:"
-input: .asciiz "Ingrese un número del 1 al 10"
-inputError: .asciiz "LO ACABO DE ESPECIFICAR ARRIBA NO SEA IMBECIL!"
+input: .asciiz "Ingrese un numero para el primer Pokemon (del 1 al 10)"
+input2: .asciiz "Ingrese un numero para el segundo Pokemon (del 1 al 10)"
+inputError: .asciiz "Solo un numero del 1 al 10"
 
 onlyTypesPath_j: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\data\\types.txt"
 onlyTypesPath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\types.txt"
@@ -16,7 +17,10 @@ pokeTypePath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\pokeTypes.txt"
 pokeTypeBuffer: .space 1821
 pokeTypeArray: .space 6912
 
-
+nombresPoke: .space 128
+typesPoke: .space 128
+attacksPoke: .space 128
+lifesPoke: .space 128
 
 tipo: .asciiz "fight"
 
@@ -62,6 +66,11 @@ main:
 	
 	jal random
 	move $t0, $v0
+	li $a0, 0
+	add $a0, $a0, $t0
+	li $v0, 1
+	syscall
+	
 	addi $t1, $t0, 10
 	
 	la $a0, pokeTypeArray
@@ -76,7 +85,9 @@ main:
 loop:
 	li $v0, 5
 	syscall
-	move $a0, $v0
+	move $s1, $v0
+	li $a0, 0
+	add $a0, $a0, $s1
 	jal valInput
 	beq $v0, 0, loopMsg
 	j continue
@@ -85,7 +96,42 @@ loopMsg:
 	jal printLn
 	j loop
 continue:
-			
+	la $a0, input2
+	jal printLn
+loop2:
+	li $v0, 5
+	syscall
+	move $s2, $v0
+	li $a0, 0
+	add $a0, $a0, $s2
+	jal valInput
+	beq $v0, 0, loopMsg2
+	j continue2
+loopMsg2:
+	la $a0, inputError
+	jal printLn
+	j loop2
+	
+continue2:
+	
+	li $t2, 0
+	add $t2, $t2, $t0
+	add $t2, $t2, $s1
+	
+	la $a0, pokeTypeArray
+	move $a1, $t2	
+	jal get
+	
+	la $a0, ($v0)
+	li $v0, 4
+	syscall
+	
+	#la $a1, pokeTypeArray
+	#jal get
+	
+
+
+	
 	#SE TERMINO EL PROGRAMA POR FIN
 	li, $v0, 10
 	syscall

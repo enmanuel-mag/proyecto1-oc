@@ -1,5 +1,5 @@
 .globl valInput
-
+#$a0 -> numero menor que 10 y mayor que 0
 valInput: 
 
   addi $sp, $sp, -8

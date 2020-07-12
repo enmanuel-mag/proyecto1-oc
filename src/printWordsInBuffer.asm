@@ -6,15 +6,14 @@
 
 printWordsInBuffer:
 
-	addi $sp, $sp, -32
+	addi $sp, $sp, -28
 	sw $t0, 0($sp)
 	sw $t1, 4($sp)
 	sw $t2, 8($sp)
 	sw $a0, 12($sp)
 	sw $a1, 16($sp)
-	sw $v0, 20($sp)
-	sw $a2, 24($sp)
-	sw $ra, 28($sp)
+	sw $a2, 20($sp)
+	sw $ra, 24($sp)
 
 #	sll $t0, $a2, 5
 #	add $a0, $a0, $t0
@@ -41,15 +40,15 @@ printWordsInBuffer:
 		addi $t0, $t0, 1
 		j printLoop
 	todosImpresos:
+		la $v0, ($a0)
 		lw $t0, 0($sp)
 		lw $t1, 4($sp)
 		lw $t2, 8($sp)
 		lw $a0, 12($sp)
 		lw $a1, 16($sp)
-		lw $v0, 20($sp)
-		lw $a2, 24($sp)
-		lw $ra, 28($sp)
-		addi $sp, $sp, 32
+		lw $a2, 20($sp)
+		lw $ra, 24($sp)
+		addi $sp, $sp, 28
 		jr $ra	
 	
 printLn:
@@ -59,9 +58,9 @@ printLn:
 	
 	li $v0, 11 
 	la $a0, '\n'      
-    	syscall
+  syscall
     	
-    	lw $v0, 0($sp)
+  lw $v0, 0($sp)
 	lw $a0, 4($sp)
 	addi $sp, $sp, 8
     	jr $ra
