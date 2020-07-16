@@ -4,9 +4,6 @@ input: .asciiz "Ingrese un numero para el primer Pokemon (del 1 al 10)"
 input2: .asciiz "Ingrese un numero para el segundo Pokemon (del 1 al 10)"
 inputError: .asciiz "Solo un numero del 1 al 10"
 
-numberBuffer: .space 20
-numberBuffer2: .space 20
-
 onlyTypesPath_j: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\data\\types.txt"
 onlyTypesPath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\types.txt"
 onlyTypeBuffer: .space 130
@@ -79,22 +76,23 @@ main:
 	
 	addi $t1, $t0, 10
 	
+	#Se imprime un rango al azar de pokemones
 	la $a0, pokeTypeArray
-	move $a1, $t1
-	move $a2, $t0
+	la $a1, ($t1)
+	la $a2, ($t0)
 	jal printWordsInBuffer
-	
-	
+	#Se imprime mensaje que invita al usuario a seleccionar un pokemon
 	la $a0, input
 	jal printLn
 	
 loop:
-	li $v0, 8
-	la $a0, numberBuffer
-	li $a1, 20
+	#Pide por pantalla un entero
+	li $v0, 5
 	syscall
-	la $s1, ($a0)
 	
+	la $s1, ($v0)
+	li $a0, 0
+	add $a0, $a0, $s1
 	jal valInput
 	beq $v0, 0, loopMsg
 	j continue
@@ -106,12 +104,11 @@ continue:
 	la $a0, input2
 	jal printLn
 loop2:
-	li $v0, 8
-	la $a0, numberBuffer2
-	li $a1, 20
+	li $v0, 5
 	syscall
-	la $s2, ($a0)
-	
+	move $s2, $v0
+	li $a0, 0
+	add $a0, $a0, $s2
 	jal valInput
 	beq $v0, 0, loopMsg2
 	j continue2

@@ -6,13 +6,14 @@
 .globl stringSection
 
 stringSection:####################No se puede copiar un string de exceda la capacidad de un registro
-	addi $sp, $sp, -24
+	addi $sp, $sp, -28
 	sw $a0, 0($sp)
 	sw $a1, 4($sp)
 	sw $a2, 8($sp)
 	sw $t0, 12($sp)
 	sw $t1, 16($sp)
-	sw $ra, 20($sp)
+	sw $t2, 20($sp)
+	sw $ra, 24($sp)
 	
 	la $t1, ($a1)
 	li $t2, 13
@@ -42,6 +43,7 @@ stringSection:####################No se puede copiar un string de exceda la capa
 		lw $a2, 8($sp)
 		lw $t0, 12($sp)
 		lw $t1, 16($sp)
-		lw $ra, 20($sp)
-		addi $sp, $sp, 24
+		lw $t2, 20($sp)
+		lw $ra, 24($sp)
+		addi $sp, $sp, 28
 		jr $ra
