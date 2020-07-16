@@ -37,12 +37,14 @@ valImportantes: .word 0,0,0,0,0
 #valImportantes[3] -> index 1st type pokemon in onlyTypeArray
 #valImportantes[4] -> index 2st type pokemon in onlyTypeArray
 
+matriz: .asciiz "1,1,1,1,1,0.5,1,0,0.5,1,1,1,1,1,1,1,1,1;2,1,0.5,0.5,1,2,0.5,0,2,1,1,1,1,0.5,2,1,2,0.5;1,2,1,1,1,0.5,2,1,0.5,1,1,2,0.5,1,1,1,1,1;1,1,1,0.5,0.5,0.5,1,0.5,0,1,1,2,1,1,1,1,1,2;1,1,0,2,1,2,0.5,1,2,2,1,0.5,2,1,1,1,1,1;1,0.5,2,1,0.5,1,2,1,0.5,2,1,1,1,1,2,1,1,1;1,0.5,0.5,0.5,1,1,1,0.5,0.5,0.5,1,2,1,2,1,1,2,0.5;0,1,1,1,1,1,1,2,1,1,1,1,1,2,1,1,0.5,1;1,1,1,1,1,2,1,1,0.5,0.5,0.5,1,0.5,1,2,1,1,2;1,1,1,1,1,0.5,2,1,2,0.5,0.5,2,1,1,2,0.5,1,1;1,1,1,1,2,2,1,1,1,2,0.5,0.5,1,1,1,0.5,1,1;1,1,0.5,0.5,2,2,0.5,1,0.5,0.5,2,0.5,1,1,1,0.5,1,1;1,1,2,1,0,1,1,1,1,1,2,0.5,0.5,1,1,0.5,1,1;1,2,1,2,1,1,1,1,0.5,1,1,1,1,0.5,1,1,0,1;1,1,2,1,2,1,1,1,0.5,0.5,0.5,2,1,1,0.5,2,1,1;1,1,1,1,1,1,1,1,0.5,1,1,1,1,1,1,2,1,0;1,0.5,1,1,1,1,1,2,1,1,1,1,1,2,1,1,0.5,0.5;1,2,1,0.5,1,1,1,1,0.5,0.5,1,1,1,1,1,2,2,1"
+
 .text
 .globl main
 
 main:
 	#Lectura del archivo de solo los tipos
-	la $a0, onlyTypesPath_j
+	la $a0, onlyTypesPath
 	la $a1, onlyTypeBuffer
 	li $a2, 130
 	jal read
@@ -55,7 +57,7 @@ main:
 	jal stringSplitBy
 	
 	#Lectura del archivo matrix
-	la $a0, pokeMatrixPath_j
+	la $a0, pokeMatrixPath
 	la $a1, pokeMatrixBuffer
 	li $a2, 790
 	jal read
@@ -68,7 +70,7 @@ main:
 	jal stringSplitBy
 	
 	#Lectura del archivo pokeTypes
-	la $a0, pokeTypePath_j
+	la $a0, pokeTypePath
 	la $a1, pokeTypeBuffer
 	li $a2, 1821
 	jal read
