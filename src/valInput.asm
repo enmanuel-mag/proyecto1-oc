@@ -2,17 +2,27 @@
 #$a0 -> numero menor que 10 y mayor que 0
 valInput: 
 
-  addi $sp, $sp, -8
+  addi $sp, $sp, -16
   sw $a0, 0($sp)
   sw $t0, 4($sp)
+  sw $ra, 8($sp)
+  sw $t1, 12($sp)
 
-  addi $t0, $a0, -10
+  la $t1, ($a0)
+
+  jal strIsDigit
+  beq $v0, 0, returnZero
+
+  jal stringToInt
+  beq $v0, 0, returnZero
+
+  addi $t0, $t1, -10
 
   blez $t0, valGZ
   j returnZero
 
 valGZ:
-  bgtz $a0, returnOne
+  bgtz $t1, returnOne
   j returnZero
 
 returnZero:
@@ -27,5 +37,7 @@ exit:
   
   lw $a0, 0($sp)
   lw $t0, 4($sp)
-  addi $sp, $sp, 8
+  lw $ra, 8($sp)
+  lw $t1, 12($sp)
+  addi $sp, $sp, 16
   jr $ra
