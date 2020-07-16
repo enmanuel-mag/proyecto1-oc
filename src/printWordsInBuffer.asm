@@ -14,12 +14,12 @@ printWordsInBuffer:
 	sw $a1, 16($sp)
 	sw $a2, 20($sp)
 	sw $ra, 24($sp)
-
+	
 #	sll $t0, $a2, 5
 #	add $a0, $a0, $t0
 
 	li $t0, 0 #elementos impresos
-	li $t2, 0 #indice el buffer
+	li $t2, 0 #puntero del buffer
 	printLoop: 
 		slt $t1, $t0, $a1
 		bne $t1, 1, todosImpresos 
@@ -58,9 +58,9 @@ printLn:
 	
 	li $v0, 11 
 	la $a0, '\n'      
-  syscall
+  	syscall
     	
-  lw $v0, 0($sp)
+  	lw $v0, 0($sp)
 	lw $a0, 4($sp)
 	addi $sp, $sp, 8
     	jr $ra

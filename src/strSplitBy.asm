@@ -27,7 +27,7 @@ stringSplitBy:
 		beq $t1, $0, elementosCopiados
 		
 		sll $t2, $t0, 6 	#nuevo indice del buffer (multiplo de 4)
-		add $a1, $a1, $t2	#preparo la nueva direccion
+		add $a1, $t3, $t2	#preparo la nueva direccion
 		jal stringSection
 		#preparo la sgt llamda
 		la $a0, ($v1)	#avanza la direccion del string

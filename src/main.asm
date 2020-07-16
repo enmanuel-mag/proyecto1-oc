@@ -9,10 +9,12 @@ onlyTypesPath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\types.txt"
 onlyTypeBuffer: .space 130
 onlyTypeArray: .space 1152
 
+pokeMatrixPath_j: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\data\\matriz.txt"
 pokeMatrixPath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\matriz.txt"
 pokeMatrixBuffer: .space 790
 pokeMatrixArray: .space 1152
 
+pokeTypePath_j: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\data\\pokeTypes.txt"
 pokeTypePath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\pokeTypes.txt"
 pokeTypeBuffer: .space 1821
 pokeTypeArray: .space 6912
@@ -22,17 +24,16 @@ typesPoke: .space 128
 attacksPoke: .space 128
 lifesPoke: .space 128
 
-tipo: .asciiz "fight"
-
 .text
 .globl main
 
 main:
 	#Lectura del archivo de solo los tipos
-	la $a0, onlyTypesPath
+	la $a0, onlyTypesPath_j
 	la $a1, onlyTypeBuffer
 	li $a2, 130
 	jal read
+	
 	#Creacion del array con el contenido de solo los tipos
 	la $a0, onlyTypeBuffer
 	la $a1, onlyTypeArray
@@ -41,10 +42,11 @@ main:
 	jal stringSplitBy
 	
 	#Lectura del archivo matrix
-	la $a0, pokeMatrixPath
+	la $a0, pokeMatrixPath_j
 	la $a1, pokeMatrixBuffer
 	li $a2, 790
 	jal read
+	
 	#Creacion del array con el contenido de la matrix
 	la $a0, pokeMatrixBuffer
 	la $a1, pokeMatrixArray
@@ -53,7 +55,7 @@ main:
 	jal stringSplitBy
 	
 	#Lectura del archivo pokeTypes
-	la $a0, pokeTypePath
+	la $a0, pokeTypePath_j
 	la $a1, pokeTypeBuffer
 	li $a2, 1821
 	jal read
@@ -64,6 +66,7 @@ main:
 	li $a3, 108
 	jal stringSplitBy
 	
+	#Se obtiene el número aleatorio
 	jal random
 	move $t0, $v0
 	li $a0, 0
