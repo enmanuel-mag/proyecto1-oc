@@ -25,8 +25,8 @@ pokeTypeArray: .space 6912
 
 pokeSelected1: .space 128 #[<nombre1>, <tipo1>]
 pokeSelected2: .space 128 #[<nombre1>, <tipo1>]
-nombresPoke: .space 128
-typesPoke: .space 128
+#nombresPoke: .space 128 #dado de baja
+#typesPoke: .space 128  #dado de baja 
 attacksPoke: .float 2.0, 2.0
 lifesPoke: .float 5.0, 5.0
 
@@ -44,7 +44,7 @@ matriz: .asciiz "1,1,1,1,1,0.5,1,0,0.5,1,1,1,1,1,1,1,1,1;2,1,0.5,0.5,1,2,0.5,0,2
 
 main:
 	#Lectura del archivo de solo los tipos
-	la $a0, onlyTypesPath
+	la $a0, onlyTypesPath_j
 	la $a1, onlyTypeBuffer
 	li $a2, 130
 	jal read
@@ -57,7 +57,7 @@ main:
 	jal stringSplitBy
 	
 	#Lectura del archivo matrix
-	la $a0, pokeMatrixPath
+	la $a0, pokeMatrixPath_j
 	la $a1, pokeMatrixBuffer
 	li $a2, 790
 	jal read
@@ -70,7 +70,7 @@ main:
 	jal stringSplitBy
 	
 	#Lectura del archivo pokeTypes
-	la $a0, pokeTypePath
+	la $a0, pokeTypePath_j
 	la $a1, pokeTypeBuffer
 	li $a2, 1821
 	jal read
