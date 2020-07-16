@@ -4,7 +4,6 @@
 .globl random
 
 random:
-    
     li $a1, 99 
     li $v0, 42 
     syscall
