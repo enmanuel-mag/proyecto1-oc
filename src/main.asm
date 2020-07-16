@@ -23,6 +23,8 @@ pokeTypePath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\pokeTypes.txt"
 pokeTypeBuffer: .space 1821
 pokeTypeArray: .space 6912
 
+pokeSelected1: .space 128 #[<nombre1>, <tipo1>]
+pokeSelected2: .space 128 #[<nombre1>, <tipo1>]
 nombresPoke: .space 128
 typesPoke: .space 128
 attacksPoke: .float 2.0, 2.0
@@ -99,6 +101,8 @@ main:
 	jal printWordsInBuffer
 	#Se imprime mensaje que invita al usuario a seleccionar un pokemon
 	la $a0, input
+	li $v0, 4
+	syscall
 	jal printLn
 	
 loop:
@@ -115,10 +119,14 @@ loop:
 	j continue
 loopMsg:
 	la $a0, inputError
+	li $v0, 4
+	syscall
 	jal printLn
 	j loop
 continue:
 	la $a0, input2
+	li $v0, 4
+	syscall
 	jal printLn
 loop2:
 
@@ -134,6 +142,8 @@ loop2:
 	j continue2
 loopMsg2:
 	la $a0, inputError
+	li $v0, 4
+	syscall
 	jal printLn
 	j loop2
 	
@@ -198,7 +208,11 @@ continue2:
 	la $a0, ($v0)
 	li $v0, 4
 	syscall
-	#imprimo el 1er pokemon
+	#imprimo vs.
+	la $a0, combatientesStr1
+	li $v0, 4
+	syscall
+	#imprimo el 2do pokemon
 	la $a0, valImportantes
 	lw $a1, 8($a0) #cargo indice
 	la $a0, pokeTypeArray #direccion de buffer
@@ -207,8 +221,39 @@ continue2:
 	la $a0, ($v0)
 	li $v0, 4
 	syscall
+	#---------Fin presentar combatientes
 	
+	#<<<<<<<<<>>>>>>>>>>>>>>
+	#Guardo en pokeSelected1 el nombre y el tipo del primer pokemon
+	jal printLn
+	la $a0, valImportantes
+	lw $a1, 4($a0) #cargo indice
+	la $a0, pokeTypeArray #direccion de buffer
+	li $a2, 64 #bytes de separacion
+	jal strBufferGet
+	la $a0, ($v0)
+	la $a1, pokeSelected1
+	li $a2, ','
+	li $a3, 2
+	jal stringSplitBy
 	
+	la $a0, pokeSelected1 #direccion de buffer
+	li $a1, 1
+	li $a2, 64 #bytes de separacion
+	jal strBufferGet
+	
+	#test de impresion de tipo
+	#la $a0, ($v0)
+	#li $v0, 4
+	#syscall
+	
+	la $a0, onlyTypeArray
+	la $a1, ($v0)
+	jal strIndexOf
+	
+	la $a0, ($v0)
+	li $v0, 1
+	syscall
 	
 	
 	#SE TERMINO EL PROGRAMA POR FIN

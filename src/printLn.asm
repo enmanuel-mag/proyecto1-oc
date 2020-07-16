@@ -1,14 +1,15 @@
-#$a0->cadena para imprimri por pantalla con salto de linea
-.data
-	salto: .asciiz "\n"	
-.text
 .globl printLn
 
 printLn:
-
-	li $v0, 4  	
-	syscall
-	li $v0, 4
-	la $a0, salto      
-	syscall 
-	jr $ra
+	addi $sp, $sp, -8
+	sw $v0, 0($sp)
+	sw $a0, 4($sp)
+	
+	li $v0, 11
+	la $a0, '\n'      
+    	syscall
+    	
+    	lw $v0, 0($sp)
+	lw $a0, 4($sp)
+	addi $sp, $sp, 8
+    	jr $ra

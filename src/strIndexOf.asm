@@ -14,50 +14,40 @@
 
 strIndexOf:
 
-	addi $sp, $sp, -16
+	addi $sp, $sp, -20
 	sw $t0, 0($sp)
-	sw $t2, 4($sp)
-	sw $a0, 8($sp)
-	sw $ra, 12($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $a0, 12($sp)
+	sw $ra, 16($sp)
 
 	li $t0, 0 #elementos impresos
 	li $t2, 0 #indice el buffer
-
+	la $t1, ($a0)
 Loop: 
 		#slt $t1, $t0, $a0
 		#bne $t1, 1, endLoop 
 
-		sll $t2, $t0, 5
-		add $a0, $a0, $t2
+		sll $t2, $t0, 6
+		add $a0, $t1, $t2
 		    
-    jal stringCompare
-    beq $v0, 1, endLoop
+    		jal stringCompare
+    		beq $v0, 1, endLoop
 
 		addi $t0, $t0, 1
 		
 		j Loop
 
 endLoop:
-    move $v0, $t0
-    la $v1, ($a0)
+    		move $v0, $t0
+    		la $v1, ($a0)
 
 		lw $t0, 0($sp)
-		lw $t2, 4($sp)
-		lw $a0, 8($sp)
-		lw $ra, 12($sp)
-		addi $sp, $sp, 16
+		lw $t1, 4($sp)
+		lw $t2, 8($sp)
+		lw $a0, 12($sp)
+		lw $ra, 16($sp)
+		addi $sp, $sp, 20
 		jr $ra	
 	
-printLn:
-	addi $sp, $sp, -8
-	sw $v0, 0($sp)
-	sw $a0, 4($sp)
-	
-	li $v0, 11 
-	la $a0, '\n'      
-    	syscall
-    	
-    	lw $v0, 0($sp)
-	lw $a0, 4($sp)
-	addi $sp, $sp, 8
-    	jr $ra
+
