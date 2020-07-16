@@ -1,7 +1,9 @@
 .data
 wel: .asciiz "Bienvenido al sistema de combates Pokemon:"
 input: .asciiz "Ingrese un numero para el primer Pokemon (del 1 al 10)"
+bufferInput: .space 64
 input2: .asciiz "Ingrese un numero para el segundo Pokemon (del 1 al 10)"
+bufferInput2: .space 64
 inputError: .asciiz "Solo un numero del 1 al 10"
 
 onlyTypesPath_j: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\data\\types.txt"
@@ -86,14 +88,15 @@ main:
 	jal printLn
 	
 loop:
-	#Pide por pantalla un entero
-	li $v0, 5
+	#Pide por pantalla un string(proximo a validar)
+	la $a0, bufferInput
+	li $a1, 64
+	li $v0, 8
 	syscall
 	
-	la $s1, ($v0)
-	li $a0, 0
-	add $a0, $a0, $s1
+	la $a0, bufferInput
 	jal valInput
+	
 	beq $v0, 0, loopMsg
 	j continue
 loopMsg:
@@ -104,12 +107,15 @@ continue:
 	la $a0, input2
 	jal printLn
 loop2:
-	li $v0, 5
+
+	la $a0, bufferInput2
+	li $a1, 64
+	li $v0, 8
 	syscall
-	move $s2, $v0
-	li $a0, 0
-	add $a0, $a0, $s2
+	
+	la $a0, bufferInput2
 	jal valInput
+	
 	beq $v0, 0, loopMsg2
 	j continue2
 loopMsg2:
@@ -118,24 +124,15 @@ loopMsg2:
 	j loop2
 	
 continue2:
-	
-	li $t2, 0
-	add $t2, $t2, $t0
-	add $t2, $t2, $s1
-	
-	la $a0, pokeTypeArray
-	move $a1, $t2	
-	jal get
-	
-	la $a0, ($v0)
+	#bufferInput2
+	#bufferInput1
+	la $a0, bufferInput2
 	li $v0, 4
 	syscall
+	la $a0, bufferInput
+	syscall
 	
-	#la $a1, pokeTypeArray
-	#jal get
 	
-
-
 	
 	#SE TERMINO EL PROGRAMA POR FIN
 	li, $v0, 10

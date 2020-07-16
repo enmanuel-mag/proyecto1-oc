@@ -1,5 +1,6 @@
 .globl strIsDigit
-
+#$a0 -> direccion de string
+#$v0 -> 1 si todo el string esta compuesto por digitos, 0 caso contrario.
 strIsDigit:
 	addi $sp, $sp, -24  #(6*4)
     	sw $t0, 0($sp)
@@ -8,7 +9,8 @@ strIsDigit:
     	sw $t3, 12($sp)
     	sw $a0, 16($sp)
     	sw $ra, 20($sp)
-    
+    	
+    	
     	la $t0, ($a0) #copio la direccion de a0
     	li $t3, 0 #indice del char iterado
     	li $t2, 1 #de entrada asumo que es digit
@@ -16,6 +18,9 @@ strIsDigit:
     	# obtener el valor
     	add $t1, $t3, $t0
     	lb $t1, 0($t1)
+    	beq $t1, 13, endStr #\d
+    	beq $t1, 10, endStr #\n
+    	
     	move $a0, $t1  	
     while:
     	jal isDigit
@@ -24,6 +29,10 @@ strIsDigit:
     	
     	addi $t3, $t3, 1
     	j do
+    endStr:
+    	bne $t3, 0, endStrIsDigit
+    	andi $t2, $t2, 0
+    	
     endStrIsDigit:
     	move $v0, $t2
     	
