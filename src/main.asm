@@ -25,10 +25,16 @@ pokeTypeArray: .space 6912
 
 nombresPoke: .space 128
 typesPoke: .space 128
-attacksPoke: .space 128
-lifesPoke: .space 128
+attacksPoke: .float 2.0, 2.0
+lifesPoke: .float 5.0, 5.0
 
-valImportantes: .word 0,0,0,0,0 #valImportantes[0] -> randomNumber
+valImportantes: .word 0,0,0,0,0 
+#valImportantes[0] -> randomNumber
+#valImportantes[1] -> index 1st pokemon in pokeTypeArray
+#valImportantes[2] -> index 2st pokemon in pokeTypeArray
+#valImportantes[3] -> index 1st type pokemon in onlyTypeArray
+#valImportantes[4] -> index 2st type pokemon in onlyTypeArray
+
 .text
 .globl main
 
@@ -146,12 +152,14 @@ continue2:
 	addi $t2, $v0, -1 #guardo en t2 la resta del valor seleccinado con 1
 	add $t2, $t1, $t2 #guardo en t2, la suma de la resta anterior con el random
 	#en t2 queda el indice correspondiente al pokemon seleccionado
+	sw $t2, 4($t0)#guardo en valImportantes
 	#indexo t2 en 
-	la $a0, pokeTypeArray
-	move $a1, $t2
-	li $a2, 64
-	jal strBufferGet
-	la $t6, ($v0)
+	#la $a0, pokeTypeArray
+	#move $a1, $t2
+	#li $a2, 64
+	#jal strBufferGet
+	#la $t6, ($v0)
+	
 	#<<<<<<<<<<<<<<<Guardo en t6 el pokemito 1>>>>>>>>>
 	
 	#<<<<<<<<<<Obtengo pokemon 2>>>>>>>>>>>>>>>>>>>>
@@ -165,31 +173,41 @@ continue2:
 	addi $t2, $v0, -1 #guardo en t2 la resta del valor seleccinado con 1
 	add $t2, $t1, $t2 #guardo en t2, la suma de la resta anterior con el random
 	#en t2 queda el indice correspondiente al pokemon seleccionado
-	#indexo t3 en pokeTypeArray
-	la $a0, pokeTypeArray
-	move $a1, $t2
-	li $a2, 64
-	jal strBufferGet
-	la $t7, ($v0)
-	#<<<<<<<<<<<<<<<Guardo en t7 el pokemito 2>>>>>>>>>
+	sw $t2, 8($t0)#guardo en valImportantes
 	
+	#indexo t3 en pokeTypeArray
+	#la $a0, pokeTypeArray
+	#move $a1, $t2
+	#li $a2, 64
+	#jal strBufferGet
+	#la $t7, ($v0)
+	
+	#<<<<<<<<<<<<<<<Guardo en t7 el pokemito 2>>>>>>>>>
+	#-------Presento a los combatientes----------------
+	la $t0, valImportantes
+	#Imprimo la palabra "Combatientes: "
 	la $a0, combatientesStr0
 	li $v0, 4
 	syscall
-	la $a0, ($t6)
+	#imprimo el 1er pokemon
+	la $a0, valImportantes
+	lw $a1, 4($a0) #cargo indice
+	la $a0, pokeTypeArray #direccion de buffer
+	li $a2, 64 #bytes de separacion
+	jal strBufferGet
+	la $a0, ($v0)
+	li $v0, 4
 	syscall
-	la $a0, combatientesStr1
-	syscall
-	la $a0, ($t7)
+	#imprimo el 1er pokemon
+	la $a0, valImportantes
+	lw $a1, 8($a0) #cargo indice
+	la $a0, pokeTypeArray #direccion de buffer
+	li $a2, 64 #bytes de separacion
+	jal strBufferGet
+	la $a0, ($v0)
+	li $v0, 4
 	syscall
 	
-	
-	#tomo lo que esta en el buffer 2 validado y lo convierto a entero
-	#la $a0, bufferInput2
-	#jal stringToInt
-	#move $a0, $v0
-	#li $v0, 1
-	#syscall
 	
 	
 	
