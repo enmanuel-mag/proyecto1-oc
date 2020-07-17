@@ -47,6 +47,6 @@ stringSplitBy:
 		lw $t2, 24($sp)
 		lw $t3, 28($sp)
 		lw $ra, 32($sp)
-		addi $sp, $sp, 28
+		addi $sp, $sp, 36
 		jr $ra
 	
