@@ -20,7 +20,7 @@ fDos: .float 2.0
 #$a1 -> index de la fila
 #$a2 -> index de la columna
 #retorno
-#$l0 -> numero flotante correspondiente a la posicion indexada
+#$f10 -> numero flotante correspondiente a la posicion indexada
 
 getFactor:
 	addi $sp, $sp, -40
@@ -88,16 +88,16 @@ getFactor:
 	beq $v0, 1, returnDos
 	
 returnCero:
-	l.s $f0, fCero
+	l.s $f10, fCero
 	j exit
 returnMedio:
-	l.s $f0, fMedio
+	l.s $f10, fMedio
 	j exit
 returnUno:
-	l.s $f0, fUno
+	l.s $f10, fUno
 	j exit
 returnDos:
-	l.s $f0, fDos
+	l.s $f10, fDos
 	j exit
 	
 exit:

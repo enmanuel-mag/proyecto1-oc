@@ -1,3 +1,4 @@
+
 .data
 wel: .asciiz "Bienvenido al sistema de combates Pokemon:"
 input: .asciiz "Ingrese un numero para el primer Pokemon (del 1 al 10)"
@@ -18,7 +19,6 @@ pokeMatrixPath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\matriz.txt"
 pokeMatrixBuffer: .space 790
 pokeMatrixArray: .space 1152
 
-
 pokeTypePath_j: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\data\\pokeTypes.txt"
 pokeTypePath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\pokeTypes.txt"
 pokeTypeBuffer: .space 1821
@@ -31,7 +31,7 @@ pokeSelected2: .space 128 #[<nombre1>, <tipo1>]
 attacksPoke: .float 2.0, 2.0
 lifesPoke: .float 5.0, 5.0
 
-valImportantes: .word 0,0,0,0,0 
+valImportantes: .word 0,0,0,0,0
 #valImportantes[0] -> randomNumber
 #valImportantes[1] -> index 1st pokemon in pokeTypeArray
 #valImportantes[2] -> index 2st pokemon in pokeTypeArray
@@ -42,10 +42,9 @@ matriz: .asciiz "1,1,1,1,1,0.5,1,0,0.5,1,1,1,1,1,1,1,1,1;2,1,0.5,0.5,1,2,0.5,0,2
 
 .text
 .globl main
-
 main:
 	#Lectura del archivo de solo los tipos
-	la $a0, onlyTypesPath
+	la $a0, onlyTypesPath_j
 	la $a1, onlyTypeBuffer
 	li $a2, 130
 	jal read
@@ -58,7 +57,7 @@ main:
 	jal stringSplitBy
 	
 	#Lectura del archivo matrix
-	la $a0, pokeMatrixPath
+	la $a0, pokeMatrixPath_j
 	la $a1, pokeMatrixBuffer
 	li $a2, 790
 	jal read
@@ -71,7 +70,7 @@ main:
 	jal stringSplitBy
 	
 	#Lectura del archivo pokeTypes
-	la $a0, pokeTypePath
+	la $a0, pokeTypePath_j
 	la $a1, pokeTypeBuffer
 	li $a2, 1821
 	jal read
@@ -226,9 +225,9 @@ continue2:
 	syscall
 	#---------Fin presentar combatientes
 	
-	#<<<<<<<<<>>>>>>>>>>>>>>
+	#<<<<<<<<< Obtengo los indices y los guardo en valImportantes >>>>>>>>>>>>>>
 	#Guardo en pokeSelected1 el nombre y el tipo del primer pokemon
-	jal printLn
+	#jal printLn
 	la $a0, valImportantes
 	lw $a1, 4($a0) #cargo indice
 	la $a0, pokeTypeArray #direccion de buffer
@@ -239,26 +238,22 @@ continue2:
 	li $a2, ','
 	li $a3, 2
 	jal stringSplitBy
-	
+	#obtengo el tipo del primero pokemon
 	la $a0, pokeSelected1 #direccion de buffer
 	li $a1, 1
 	li $a2, 64 #bytes de separacion
 	jal strBufferGet
-	
-	#test de impresion de tipo
-	#la $a0, ($v0)
-	#li $v0, 4
-	#syscall
-	
+	#busco el tipo del primero pokemon en onlyTypeArray
 	la $a0, onlyTypeArray
 	la $a1, ($v0)
 	jal strIndexOf
-	
+	#guardo el indice encontrado previamente
 	la $a0, valImportantes
-	sw $v0, 12($a0)
+	sw $v0, 12($a0)#Guardo el indice donde se encuentra el tipo del primer pokemon
 	
 	
-	jal printLn
+	#Guardo en pokeSelected2 el nombre y el tipo del primer pokemon
+	#jal printLn
 	la $a0, valImportantes
 	lw $a1, 8($a0) #cargo indice
 	la $a0, pokeTypeArray #direccion de buffer
@@ -269,36 +264,71 @@ continue2:
 	li $a2, ','
 	li $a3, 2
 	jal stringSplitBy
-	
+	#obtengo el tipo del primero pokemon
 	la $a0, pokeSelected2 #direccion de buffer
 	li $a1, 1
 	li $a2, 64 #bytes de separacion
 	jal strBufferGet
-	
+	#busco el tipo del primero pokemon en onlyTypeArray
 	la $a0, onlyTypeArray
 	la $a1, ($v0)
 	jal strIndexOf
-	
+	#guardo el indice encontrado previamente
 	la $a0, valImportantes
-	sw $v0, 12($a0)
+	sw $v0, 16($a0)#Guardo el indice donde se encuentra el tipo del segundo pokemon
 	
-	la $a0, matriz
-	lw $a1, 8($a0)
-	lw $a2, 12($a0)
-	jal getFactor
 	
-	mov.s $f12, $f0
-	li $v0, 2
-	syscall
+	#<<<<<<<<<FIN Obtengo los indices y los guardo en valImportantes >>>>>>>>>>>>>>
 	
-	la $a0, matriz
+	#-------------------------
+	#Prueba de que los indices (fila y columna) se muestran correctamente
+	#Solo para comprobar que filas y columnas se cargan correctamente
+	#la $a0, valImportantes
+	#lw $a0, 12($a0)
+	#li $v0, 1
+	#syscall
+	#la $a0, valImportantes
+	#lw $a0, 16($a0)
+	#li $v0, 1
+	#syscall
+	
+	#jal printLn
+	
+	#saco el factor de ataque del primer pokemito
+	la $a0, valImportantes
 	lw $a1, 12($a0)
-	lw $a2, 8($a0)
-	jal getFactor
+	lw $a2, 16($a0)
+	la $a0, matriz
+	jal getFactor #-> $f10
+	#multiplico el factor por el ataque
+	la $a0, attacksPoke
+	la $a1, 0
+	mov.s $f0, $f10
+	jal applyFactorToBuffer
 	
-	mov.s $f12, $f0
+	#saco el factor de ataque del segundo pokemito
+	la $a0, valImportantes
+	lw $a1, 16($a0)
+	lw $a2, 12($a0)
+	la $a0, matriz
+	jal getFactor #-> $f10
+	#multiplico el factor por el ataque
+	la $a0, attacksPoke
+	la $a1, 1
+	mov.s $f0, $f10
+	jal applyFactorToBuffer
+	#--------------------------------
+	# En este punto el arreglo fe ataques ya está con el factor y listo para usarse
+	la $a0, attacksPoke
+	l.s $f12, 0($a0)
 	li $v0, 2
 	syscall
+	jal printLn
+	la $a0, attacksPoke
+	l.s $f12, 4($a0)
+	li $v0, 2
+	syscall
+	
 	
 	#SE TERMINO EL PROGRAMA POR FIN
 	li, $v0, 10

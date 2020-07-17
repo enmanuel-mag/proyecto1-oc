@@ -6,7 +6,7 @@
 .data
 	zero: .float 0.0
 	arr: .float 0.0, 1.0
-.globl someoneHasDied
+#.globl someoneHasDied
 
 .text
 main:
