@@ -18,6 +18,7 @@ pokeMatrixPath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\matriz.txt"
 pokeMatrixBuffer: .space 790
 pokeMatrixArray: .space 1152
 
+
 pokeTypePath_j: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\data\\pokeTypes.txt"
 pokeTypePath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\pokeTypes.txt"
 pokeTypeBuffer: .space 1821
