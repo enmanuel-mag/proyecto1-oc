@@ -50,7 +50,7 @@ matriz: .asciiz "1,1,1,1,1,0.5,1,0,0.5,1,1,1,1,1,1,1,1,1;2,1,0.5,0.5,1,2,0.5,0,2
 .globl main
 main:
 	#Lectura del archivo de solo los tipos
-	la $a0, onlyTypesPath_j
+	la $a0, onlyTypesPath
 	la $a1, onlyTypeBuffer
 	li $a2, 130
 	jal read
@@ -63,7 +63,7 @@ main:
 	jal stringSplitBy
 	
 	#Lectura del archivo matrix
-	la $a0, pokeMatrixPath_j
+	la $a0, pokeMatrixPath
 	la $a1, pokeMatrixBuffer
 	li $a2, 790
 	jal read
@@ -76,7 +76,7 @@ main:
 	jal stringSplitBy
 	
 	#Lectura del archivo pokeTypes
-	la $a0, pokeTypePath_j
+	la $a0, pokeTypePath
 	la $a1, pokeTypeBuffer
 	li $a2, 1821
 	jal read
@@ -94,9 +94,6 @@ main:
 	la $t0, valImportantes
 	addi $t0, $t0, 0
 	sw $a0, 0($t0)
-	#se puede comentar las sgts 3 lines(solo sirven de debugg)
-	li $v0, 1
-	syscall
 	
 	la $t0, valImportantes #obtengo el random 
 	lw $t0, 0($t0) #limite inferior
@@ -106,7 +103,7 @@ main:
 	la $a0, pokeTypeArray
 	la $a1, ($t1)
 	la $a2, ($t0)
-	jal printWordsInBuffer
+	jal printWordsInBufferNum
 	#Se imprime mensaje que invita al usuario a seleccionar un pokemon
 	la $a0, input
 	li $v0, 4
