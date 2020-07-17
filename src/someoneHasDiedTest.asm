@@ -41,12 +41,10 @@ someoneHasDied:
 	add $a0, $a0, $t0 #muevo el puntero al float deseado
 	l.s $f1 ($a0)# cargo el float deseado
 	
-	c.eq.s $f0, $f3 #guarda en coproc un bit true o false
+	c.le.s $f0, $f3 #guarda en coproc un bit true o false
 	bc1t firstPokeHasDied #move to saveNewValue if coproc is true
-	c.eq.s $f1, $f3 #guarda en coproc un bit true o false
+	c.le.s $f0, $f3 #guarda en coproc un bit true o false
 	bc1t secondPokHasDied #move to saveNewValue if coproc is true
-	li $v0, 0
-	li $v1, -1
 	j exit
 	firstPokeHasDied:
 	li $v0, 1

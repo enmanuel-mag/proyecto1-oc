@@ -1,3 +1,4 @@
+.globl someoneHasDied
 #Funcion inplace
 #solo funciona con buffer de floats
 #$a0 -> Direccion inicial del buffer de flotantes (Vida)
@@ -5,7 +6,7 @@
 #$V1 -> Index of the non dead pokemon
 .data
 	zero: .float 0.0
-.globl someoneHasDied
+.text
 someoneHasDied:
 	addi $sp, $sp, -24
 	sw $t0, 0($sp)
@@ -23,10 +24,10 @@ someoneHasDied:
 	add $a0, $a0, $t0 #muevo el puntero al float deseado
 	l.s $f1 ($a0)# cargo el float deseado
 	
-	c.eq.s $f0, $f3 #guarda en coproc un bit true o false
-	bc1f firstPokeHasDied #move to saveNewValue if coproc is true
-	c.eq.s $f0, $f3 #guarda en coproc un bit true o false
-	bc1f secondPokHasDied #move to saveNewValue if coproc is true
+	c.le.s $f0, $f3 #guarda en coproc un bit true o false
+	bc1t firstPokeHasDied #move to saveNewValue if coproc is true
+	c.le.s $f0, $f3 #guarda en coproc un bit true o false
+	bc1t secondPokHasDied #move to saveNewValue if coproc is true
 	j exit
 	firstPokeHasDied:
 	li $v0, 1

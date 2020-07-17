@@ -8,6 +8,11 @@ bufferInput2: .space 64
 inputError: .asciiz "Solo un numero del 1 al 10"
 combatientesStr0: .asciiz "Combatientes: "
 combatientesStr1: .asciiz " vs. "
+#combateStr0: .asciiz ": Vida: "
+#combateStr1: .asciiz " Ataque: "
+combateStr2: .asciiz " ataca a "
+combateStr3: .asciiz "Resultado del ataque:\n"
+combateStr4: .asciiz " es el ganador!"
 
 onlyTypesPath_j: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\data\\types.txt"
 onlyTypesPath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\types.txt"
@@ -30,6 +35,7 @@ pokeSelected2: .space 128 #[<nombre1>, <tipo1>]
 #typesPoke: .space 128  #dado de baja 
 attacksPoke: .float 2.0, 2.0
 lifesPoke: .float 5.0, 5.0
+valorMinimo: .float 0.0 #valor que me indica hasta que valor restar la vida
 
 valImportantes: .word 0,0,0,0,0
 #valImportantes[0] -> randomNumber
@@ -318,18 +324,85 @@ continue2:
 	mov.s $f0, $f10
 	jal applyFactorToBuffer
 	#--------------------------------
-	# En este punto el arreglo fe ataques ya está con el factor y listo para usarse
-	la $a0, attacksPoke
-	l.s $f12, 0($a0)
-	li $v0, 2
-	syscall
+	# En este punto el arreglo de ataques ya está con el factor y listo para usarse
+	
+	#Empieza la batalla
+	#li $t0, 0 # es el 0 en ascci
 	jal printLn
-	la $a0, attacksPoke
-	l.s $f12, 4($a0)
-	li $v0, 2
-	syscall
+	golpes:
+		#imprimo los stats del primer pokemon
+		la $a0, pokeSelected1
+		la $a1, lifesPoke
+		la $a2, attacksPoke
+		li $a3, 0
+		jal printPokeStats
+		#imprimo ": ataca a : "
+		la $a0, combateStr2
+		li $v0, 4
+		syscall
+		#imprimo los stats del segundo pokemon
+		la $a0, pokeSelected2
+		la $a1, lifesPoke
+		la $a2, attacksPoke
+		li $a3, 1
+		jal printPokeStats
+		jal printLn
+		
+		#Pelea!
+		la $a0, lifesPoke
+		la $a1, attacksPoke
+		li $a2, 2
+		la $a3, valorMinimo
+		jal floatBufferSub
+		
+		la $a0, combateStr3
+		li $v0, 4
+		syscall
+		
+		
+		#imprimo los stats del primer pokemon
+		la $a0, pokeSelected1
+		la $a1, lifesPoke
+		la $a2, attacksPoke
+		li $a3, 0
+		jal printPokeStats
+		jal printLn
+		#imprimo los stats del primer pokemon
+		la $a0, pokeSelected2
+		la $a1, lifesPoke
+		la $a2, attacksPoke
+		li $a3, 1
+		jal printPokeStats
+		jal printLn
+		jal printLn
+		
+		#j golpes
+		#pregunto si alguien murio
+		la $a0, lifesPoke
+		jal someoneHasDied
+		bne $v0, 1, golpes
+		
+		declaroGanador:
+		
+		#Declaro al ganador
+		bne $v1, 0, ganoElSegundo
+		la $a0, pokeSelected1
+		li $v0, 4
+		syscall
+		#imprimo "ha sido el ganador"
+		la $a0, combateStr4
+		li $v0, 4
+		syscall
+		j exit
+		ganoElSegundo:
+		la $a0, pokeSelected2
+		li $v0, 4
+		#imprimo "ha sido el ganador"
+		la $a0, combateStr4
+		li $v0, 4
+		syscall
 	
-	
-	#SE TERMINO EL PROGRAMA POR FIN
-	li, $v0, 10
-	syscall
+		exit:
+		#SE TERMINO EL PROGRAMA POR FIN
+		li, $v0, 10
+		syscall
