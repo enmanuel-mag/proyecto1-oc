@@ -254,10 +254,51 @@ continue2:
 	la $a1, ($v0)
 	jal strIndexOf
 	
+	la $a0, valImportantes
+	sw $v0, 12($a0)
+	
+	
+	jal printLn
+	la $a0, valImportantes
+	lw $a1, 8($a0) #cargo indice
+	la $a0, pokeTypeArray #direccion de buffer
+	li $a2, 64 #bytes de separacion
+	jal strBufferGet
 	la $a0, ($v0)
-	li $v0, 1
+	la $a1, pokeSelected2
+	li $a2, ','
+	li $a3, 2
+	jal stringSplitBy
+	
+	la $a0, pokeSelected2 #direccion de buffer
+	li $a1, 1
+	li $a2, 64 #bytes de separacion
+	jal strBufferGet
+	
+	la $a0, onlyTypeArray
+	la $a1, ($v0)
+	jal strIndexOf
+	
+	la $a0, valImportantes
+	sw $v0, 12($a0)
+	
+	la $a0, matriz
+	lw $a1, 8($a0)
+	lw $a2, 12($a0)
+	jal getFactor
+	
+	mov.s $f12, $f0
+	li $v0, 2
 	syscall
 	
+	la $a0, matriz
+	lw $a1, 12($a0)
+	lw $a2, 8($a0)
+	jal getFactor
+	
+	mov.s $f12, $f0
+	li $v0, 2
+	syscall
 	
 	#SE TERMINO EL PROGRAMA POR FIN
 	li, $v0, 10

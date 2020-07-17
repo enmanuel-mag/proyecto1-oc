@@ -15,14 +15,14 @@ dos: .asciiz "2"
 fDos: .float 2.0
 
 .text
-.globl getFactor2
+.globl getFactor
 #$a0 -> Direccion de la matriz
 #$a1 -> index de la fila
 #$a2 -> index de la columna
 #retorno
 #$l0 -> numero flotante correspondiente a la posicion indexada
 
-getFactor2:
+getFactor:
 	addi $sp, $sp, -40
 	sw $a0, 0($sp)
 	sw $a1, 4($sp)
