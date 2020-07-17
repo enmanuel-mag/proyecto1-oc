@@ -3,7 +3,7 @@
 #solo funciona con buffer de floats
 #$a0 -> Direccion inicial del buffer de flotantes (Vida)
 #$v0 -> If any value in buffe is 0 return 1 else 0
-#$V1 -> Index of the non dead pokemon
+#$V1 -> Index of the winner pokemon
 .data
 	zero: .float 0.0
 .text
@@ -16,26 +16,24 @@ someoneHasDied:
 	s.s $f3, 16($sp)
 	sw $ra, 20($sp)
 	
-	l.s $f3, zero
+	la  $t0, zero
+	l.s $f3, ($t0)
 	
 	l.s $f0 ($a0)# cargo el float deseado
-	li $t0, 1
-	sll $t0, $t0, 2 #en t0 guardo la multiplicacion del indice * 4
-	add $a0, $a0, $t0 #muevo el puntero al float deseado
-	l.s $f1 ($a0)# cargo el float deseado
+	l.s $f1 4($a0)# cargo el float deseado
 	
 	c.le.s $f0, $f3 #guarda en coproc un bit true o false
 	bc1t firstPokeHasDied #move to saveNewValue if coproc is true
-	c.le.s $f0, $f3 #guarda en coproc un bit true o false
+	c.le.s $f1, $f3 #guarda en coproc un bit true o false
 	bc1t secondPokHasDied #move to saveNewValue if coproc is true
 	j exit
 	firstPokeHasDied:
 	li $v0, 1
-	li $v1, 0
+	li $v1, 1
 	j exit
 	secondPokHasDied:
 	li $v0, 1
-	li $v1, 1
+	li $v1, 0
 	exit: 
 	lw $t0, 0($sp)
 	lw $a0, 4($sp)

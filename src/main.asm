@@ -327,7 +327,7 @@ continue2:
 	# En este punto el arreglo de ataques ya está con el factor y listo para usarse
 	
 	#Empieza la batalla
-	#li $t0, 0 # es el 0 en ascci
+	li $t0, 0 # es el 0 en ascci
 	jal printLn
 	golpes:
 		#imprimo los stats del primer pokemon
@@ -351,14 +351,12 @@ continue2:
 		#Pelea!
 		la $a0, lifesPoke
 		la $a1, attacksPoke
-		li $a2, 2
-		la $a3, valorMinimo
+		move $a2, $t0
 		jal floatBufferSub
-		
+		#Imprimo "Resultado del ataque:"
 		la $a0, combateStr3
 		li $v0, 4
 		syscall
-		
 		
 		#imprimo los stats del primer pokemon
 		la $a0, pokeSelected1
@@ -376,16 +374,21 @@ continue2:
 		jal printLn
 		jal printLn
 		
-		#j golpes
+		bne $t0, 0, turnZero
+		li $t0, 1
+		j continueTo
+		turnZero:
+		li $t0, 0
+		continueTo:
+		
 		#pregunto si alguien murio
 		la $a0, lifesPoke
 		jal someoneHasDied
 		bne $v0, 1, golpes
 		
 		declaroGanador:
-		
 		#Declaro al ganador
-		bne $v1, 0, ganoElSegundo
+		beq $v1, 1, ganoElSegundo
 		la $a0, pokeSelected1
 		li $v0, 4
 		syscall
@@ -397,6 +400,7 @@ continue2:
 		ganoElSegundo:
 		la $a0, pokeSelected2
 		li $v0, 4
+		syscall
 		#imprimo "ha sido el ganador"
 		la $a0, combateStr4
 		li $v0, 4
