@@ -1,11 +1,12 @@
 
 .data
 wel: .asciiz "Bienvenido al sistema de combates Pokemon:"
+salida: .asciiz "11.Salir"
 input: .asciiz "Ingrese un numero para el primer Pokemon (del 1 al 10)"
 bufferInput: .space 64
 input2: .asciiz "Ingrese un numero para el segundo Pokemon (del 1 al 10)"
 bufferInput2: .space 64
-inputError: .asciiz "Solo un numero del 1 al 10"
+inputError: .asciiz "Error, por favor ingrese un número válido (1 al 11):"
 combatientesStr0: .asciiz "Combatientes: "
 combatientesStr1: .asciiz " vs. "
 #combateStr0: .asciiz ": Vida: "
@@ -50,7 +51,7 @@ matriz: .asciiz "1,1,1,1,1,0.5,1,0,0.5,1,1,1,1,1,1,1,1,1;2,1,0.5,0.5,1,2,0.5,0,2
 .globl main
 main:
 	#Lectura del archivo de solo los tipos
-	la $a0, onlyTypesPath
+	la $a0, onlyTypesPath_j
 	la $a1, onlyTypeBuffer
 	li $a2, 130
 	jal read
@@ -63,7 +64,7 @@ main:
 	jal stringSplitBy
 	
 	#Lectura del archivo matrix
-	la $a0, pokeMatrixPath
+	la $a0, pokeMatrixPath_j
 	la $a1, pokeMatrixBuffer
 	li $a2, 790
 	jal read
@@ -76,7 +77,7 @@ main:
 	jal stringSplitBy
 	
 	#Lectura del archivo pokeTypes
-	la $a0, pokeTypePath
+	la $a0, pokeTypePath_j
 	la $a1, pokeTypeBuffer
 	li $a2, 1821
 	jal read
@@ -86,6 +87,12 @@ main:
 	li $a2, '\n'
 	li $a3, 108
 	jal stringSplitBy
+	
+	#imprimo la bienvenida
+	la $a0, wel
+	li $v0, 4
+	syscall
+	jal printLn
 	
 	#Se obtiene el número aleatorio
 	jal random
@@ -104,6 +111,11 @@ main:
 	la $a1, ($t1)
 	la $a2, ($t0)
 	jal printWordsInBufferNum
+	#imprimo la opcion salida
+	la $a0, salida
+	li $v0, 4
+	syscall
+	jal printLn
 	#Se imprime mensaje que invita al usuario a seleccionar un pokemon
 	la $a0, input
 	li $v0, 4
@@ -129,6 +141,11 @@ loopMsg:
 	jal printLn
 	j loop
 continue:
+	#Valido si se escogió 11, si es así goto exit
+	la $a0, bufferInput
+	jal stringToInt
+	beq $v0, 11, exit
+	
 	la $a0, input2
 	li $v0, 4
 	syscall
@@ -144,6 +161,7 @@ loop2:
 	jal valInput
 	
 	beq $v0, 0, loopMsg2
+	beq $v0, 11, exit
 	j continue2
 loopMsg2:
 	la $a0, inputError
@@ -153,6 +171,11 @@ loopMsg2:
 	j loop2
 	
 continue2:
+	#Valido si se escogió 11, si es así goto exit
+	la $a0, bufferInput2
+	jal stringToInt
+	beq $v0, 11, exit
+
 	#hasta este punto bufferInput2 y bufferInput
 	#se guardan con exito y son direcciones a string 
 	

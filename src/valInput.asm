@@ -16,7 +16,7 @@ valInput:
   jal stringToInt
   beq $v0, 0, returnZero
 
-  addi $t0, $v0, -10
+  addi $t0, $v0, -11
 
   blez $t0, valGZ
   j returnZero
