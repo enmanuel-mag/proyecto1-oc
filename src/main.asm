@@ -23,13 +23,11 @@ pokeTypePath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\pokeTypes.txt"
 pokeTypeBuffer: .space 1821
 pokeTypeArray: .space 6912
 
-pokeSelected1: .space 128 #[<nombre1>, <tipo1>]
-pokeSelected2: .space 128 #[<nombre1>, <tipo1>]
-#nombresPoke: .space 128 #dado de baja
-#typesPoke: .space 128  #dado de baja 
+pokeSelected1: .space 128 
+pokeSelected2: .space 128 
 attacksPoke: .float 2.0, 2.0
 lifesPoke: .float 5.0, 5.0
-valorMinimo: .float 0.0 #valor que me indica hasta que valor restar la vida
+valorMinimo: .float 0.0 
 
 valImportantes: .word 0,0,0,0,0
 #valImportantes[0] -> randomNumber
@@ -43,41 +41,37 @@ matriz: .asciiz "1,1,1,1,1,0.5,1,0,0.5,1,1,1,1,1,1,1,1,1;2,1,0.5,0.5,1,2,0.5,0,2
 .text
 .globl main
 main:
-	#Lectura del archivo de solo los tipos
+	
 	la $a0, onlyTypesPath_j
 	la $a1, onlyTypeBuffer
 	li $a2, 130
 	jal read
 	
-	#Creacion del array con el contenido de solo los tipos
 	la $a0, onlyTypeBuffer
 	la $a1, onlyTypeArray
 	li $a2, '\n'
 	li $a3, 18
 	jal stringSplitBy
 	
-	#Lectura del archivo pokeTypes
 	la $a0, pokeTypePath_j
 	la $a1, pokeTypeBuffer
 	li $a2, 1821
 	jal read
-	#Creacion del array con el contenido de pokeTypes
+	
 	la $a0, pokeTypeBuffer
 	la $a1, pokeTypeArray
 	li $a2, '\n'
 	li $a3, 108
 	jal stringSplitBy
 	
-	#imprimo la bienvenida
 	la $a0, wel
 	li $v0, 4
 	syscall
 	jal printLn
 	
-	#Se obtiene el n�mero aleatorio
 	jal random
 	move $a0, $v0
-	#guardo el aleatorio en el buffer datos importantes, en la posicion 0 
+	
 	la $t0, valImportantes
 	addi $t0, $t0, 0
 	sw $a0, 0($t0)
@@ -86,24 +80,21 @@ main:
 	lw $t0, 0($t0) #limite inferior
 	addi $t1, $a0, 10 #limite superior
 	
-	#Se imprime un rango al azar de pokemones
 	la $a0, pokeTypeArray
 	la $a1, ($t1)
 	la $a2, ($t0)
 	jal printWordsInBufferNum
-	#imprimo la opcion salida
 	la $a0, salida
 	li $v0, 4
 	syscall
 	jal printLn
-	#Se imprime mensaje que invita al usuario a seleccionar un pokemon
+	
 	la $a0, input
 	li $v0, 4
 	syscall
 	jal printLn
 	
 loop:
-	#Pide por pantalla un string(proximo a validar)
 	la $a0, bufferInput
 	li $a1, 64
 	li $v0, 8
@@ -121,7 +112,7 @@ loopMsg:
 	jal printLn
 	j loop
 continue:
-	#Valido si se escogi� 11, si es as� goto exit
+	
 	la $a0, bufferInput
 	jal stringToInt
 	beq $v0, 11, exit
@@ -151,63 +142,37 @@ loopMsg2:
 	j loop2
 	
 continue2:
-	#Valido si se escogi� 11, si es as� goto exit
+	
 	la $a0, bufferInput2
 	jal stringToInt
 	beq $v0, 11, exit
 
-	#hasta este punto bufferInput2 y bufferInput
-	#se guardan con exito y son direcciones a string 
-	
-	#<<<<<<<<<<Obtengo pokemon 1>>>>>>>>>>>>>>>>>>>>
-	#tomo lo que esta en el buffer1 validado y lo convierto a entero
 	la $a0, bufferInput
 	jal stringToInt
-	#preparo el valor calculado de la posicion del pokemon 1 seleccionado
-	#accedo al random generado 
+	
 	la $t0, valImportantes
-	lw $t1, 0($t0) #accedo al valor random guardado
-	addi $t2, $v0, -1 #guardo en t2 la resta del valor seleccinado con 1
-	add $t2, $t1, $t2 #guardo en t2, la suma de la resta anterior con el random
-	#en t2 queda el indice correspondiente al pokemon seleccionado
-	sw $t2, 4($t0)#guardo en valImportantes
-	#indexo t2 en 
-	#la $a0, pokeTypeArray
-	#move $a1, $t2
-	#li $a2, 64
-	#jal strBufferGet
-	#la $t6, ($v0)
+	lw $t1, 0($t0) 
+	addi $t2, $v0, -1 
+	add $t2, $t1, $t2 
 	
-	#<<<<<<<<<<<<<<<Guardo en t6 el pokemito 1>>>>>>>>>
+	sw $t2, 4($t0)
 	
-	#<<<<<<<<<<Obtengo pokemon 2>>>>>>>>>>>>>>>>>>>>
-	#tomo lo que esta en el buffer1 validado y lo convierto a entero
 	la $a0, bufferInput2
 	jal stringToInt
-	#preparo el valor calculado de la posicion del pokemon 1 seleccionado
-	#accedo al random generado 
-	la $t0, valImportantes
-	lw $t1, 0($t0) #accedo al valor random guardado
-	addi $t2, $v0, -1 #guardo en t2 la resta del valor seleccinado con 1
-	add $t2, $t1, $t2 #guardo en t2, la suma de la resta anterior con el random
-	#en t2 queda el indice correspondiente al pokemon seleccionado
-	sw $t2, 8($t0)#guardo en valImportantes
 	
-	#indexo t3 en pokeTypeArray
-	#la $a0, pokeTypeArray
-	#move $a1, $t2
-	#li $a2, 64
-	#jal strBufferGet
-	#la $t7, ($v0)
-	
-	#<<<<<<<<<<<<<<<Guardo en t7 el pokemito 2>>>>>>>>>
-	#-------Presento a los combatientes----------------
 	la $t0, valImportantes
-	#Imprimo la palabra "Combatientes: "
+	lw $t1, 0($t0) 
+	addi $t2, $v0, -1 
+	add $t2, $t1, $t2 
+	
+	sw $t2, 8($t0)
+	
+	la $t0, valImportantes
+	
 	la $a0, combatientesStr0
 	li $v0, 4
 	syscall
-	#imprimo el 1er pokemon
+	
 	la $a0, valImportantes
 	lw $a1, 4($a0) #cargo indice
 	la $a0, pokeTypeArray #direccion de buffer
@@ -216,131 +181,100 @@ continue2:
 	la $a0, ($v0)
 	li $v0, 4
 	syscall
-	#imprimo vs.
+	
 	la $a0, combatientesStr1
 	li $v0, 4
 	syscall
-	#imprimo el 2do pokemon
+	
 	la $a0, valImportantes
-	lw $a1, 8($a0) #cargo indice
+	lw $a1, 8($a0) 
 	la $a0, pokeTypeArray #direccion de buffer
-	li $a2, 64 #bytes de separacion
+	li $a2, 64 
 	jal strBufferGet
 	la $a0, ($v0)
 	li $v0, 4
 	syscall
-	#---------Fin presentar combatientes
 	
-	#<<<<<<<<< Obtengo los indices y los guardo en valImportantes >>>>>>>>>>>>>>
-	#Guardo en pokeSelected1 el nombre y el tipo del primer pokemon
-	#jal printLn
 	la $a0, valImportantes
-	lw $a1, 4($a0) #cargo indice
-	la $a0, pokeTypeArray #direccion de buffer
-	li $a2, 64 #bytes de separacion
+	lw $a1, 4($a0) 
+	la $a0, pokeTypeArray 
+	li $a2, 64 
 	jal strBufferGet
 	la $a0, ($v0)
 	la $a1, pokeSelected1
 	li $a2, ','
 	li $a3, 2
 	jal stringSplitBy
-	#obtengo el tipo del primero pokemon
-	la $a0, pokeSelected1 #direccion de buffer
+	
+	la $a0, pokeSelected1 
 	li $a1, 1
-	li $a2, 64 #bytes de separacion
+	li $a2, 64 
 	jal strBufferGet
-	#busco el tipo del primero pokemon en onlyTypeArray
+	
 	la $a0, onlyTypeArray
 	la $a1, ($v0)
 	jal strIndexOf
-	#guardo el indice encontrado previamente
+	
 	la $a0, valImportantes
 	sw $v0, 12($a0)#Guardo el indice donde se encuentra el tipo del primer pokemon
 	
-	
-	#Guardo en pokeSelected2 el nombre y el tipo del primer pokemon
-	#jal printLn
 	la $a0, valImportantes
-	lw $a1, 8($a0) #cargo indice
-	la $a0, pokeTypeArray #direccion de buffer
-	li $a2, 64 #bytes de separacion
+	lw $a1, 8($a0) 
+	la $a0, pokeTypeArray 
+	li $a2, 64 
 	jal strBufferGet
 	la $a0, ($v0)
 	la $a1, pokeSelected2
 	li $a2, ','
 	li $a3, 2
 	jal stringSplitBy
-	#obtengo el tipo del primero pokemon
-	la $a0, pokeSelected2 #direccion de buffer
+	
+	la $a0, pokeSelected2 
 	li $a1, 1
-	li $a2, 64 #bytes de separacion
+	li $a2, 64 
 	jal strBufferGet
-	#busco el tipo del primero pokemon en onlyTypeArray
+	
 	la $a0, onlyTypeArray
 	la $a1, ($v0)
 	jal strIndexOf
-	#guardo el indice encontrado previamente
+	
 	la $a0, valImportantes
-	sw $v0, 16($a0)#Guardo el indice donde se encuentra el tipo del segundo pokemon
+	sw $v0, 16($a0)
 	
-	
-	#<<<<<<<<<FIN Obtengo los indices y los guardo en valImportantes >>>>>>>>>>>>>>
-	
-	#-------------------------
-	#Prueba de que los indices (fila y columna) se muestran correctamente
-	#Solo para comprobar que filas y columnas se cargan correctamente
-	#la $a0, valImportantes
-	#lw $a0, 12($a0)
-	#li $v0, 1
-	#syscall
-	#la $a0, valImportantes
-	#lw $a0, 16($a0)
-	#li $v0, 1
-	#syscall
-	
-	#jal printLn
-	
-	#saco el factor de ataque del primer pokemito
 	la $a0, valImportantes
 	lw $a1, 12($a0)
 	lw $a2, 16($a0)
 	la $a0, matriz
-	jal getFactor #-> $f10
-	#multiplico el factor por el ataque
+	jal getFactor
 	la $a0, attacksPoke
 	la $a1, 0
 	mov.s $f0, $f10
 	jal applyFactorToBuffer
 	
-	#saco el factor de ataque del segundo pokemito
 	la $a0, valImportantes
 	lw $a1, 16($a0)
 	lw $a2, 12($a0)
 	la $a0, matriz
-	jal getFactor #-> $f10
-	#multiplico el factor por el ataque
+	jal getFactor
+	
 	la $a0, attacksPoke
 	la $a1, 1
 	mov.s $f0, $f10
 	jal applyFactorToBuffer
-	#--------------------------------
-	# En este punto el arreglo de ataques ya est� con el factor y listo para usarse
 	
-	#Empieza la batalla
-	li $t0, 0 # es el 0 en ascci
+	li $t0, 0 
 	jal printLn
 	golpes:
-		#imprimo los stats del primer pokemon
 		la $a0, pokeSelected1
 		la $a1, lifesPoke
 		la $a2, attacksPoke
 		li $a3, 0
 		jal printPokeStats
-		#imprimo ": ataca a : "
+		
 		la $a0, combateStr2
 		li $v0, 4
 		syscall
-		#imprimo los stats del segundo pokemon
+		
 		la $a0, pokeSelected2
 		la $a1, lifesPoke
 		la $a2, attacksPoke
@@ -348,24 +282,21 @@ continue2:
 		jal printPokeStats
 		jal printLn
 		
-		#Pelea!
 		la $a0, lifesPoke
 		la $a1, attacksPoke
 		move $a2, $t0
 		jal floatBufferSub
-		#Imprimo "Resultado del ataque:"
 		la $a0, combateStr3
 		li $v0, 4
 		syscall
 		
-		#imprimo los stats del primer pokemon
 		la $a0, pokeSelected1
 		la $a1, lifesPoke
 		la $a2, attacksPoke
 		li $a3, 0
 		jal printPokeStats
 		jal printLn
-		#imprimo los stats del primer pokemon
+		
 		la $a0, pokeSelected2
 		la $a1, lifesPoke
 		la $a2, attacksPoke
@@ -381,18 +312,17 @@ continue2:
 		li $t0, 0
 		continueTo:
 		
-		#pregunto si alguien murio
 		la $a0, lifesPoke
 		jal someoneHasDied
 		bne $v0, 1, golpes
 		
 		declaroGanador:
-		#Declaro al ganador
+		
 		beq $v1, 1, ganoElSegundo
 		la $a0, pokeSelected1
 		li $v0, 4
 		syscall
-		#imprimo "ha sido el ganador"
+		
 		la $a0, combateStr4
 		li $v0, 4
 		syscall
@@ -401,12 +331,11 @@ continue2:
 		la $a0, pokeSelected2
 		li $v0, 4
 		syscall
-		#imprimo "ha sido el ganador"
+		
 		la $a0, combateStr4
 		li $v0, 4
 		syscall
 	
 		exit:
-		#SE TERMINO EL PROGRAMA POR FIN
 		li, $v0, 10
 		syscall
