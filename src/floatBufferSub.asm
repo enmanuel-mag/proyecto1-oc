@@ -1,8 +1,7 @@
 .globl floatBufferSub
-#Funcion inplace, ya no es elemento por elemento, se realiza en cruz
-#solo funciona con buffer de floats
+#Funcion que resta en cruz el buffer minuendo con el sustraendo(inplace, float)
 #$a0 -> Direccion inicial del buffer Vida
-#$a1 -> Direccion inicial del buffer de Ataque
+#$a1 -> Direccion inicial del buffer Ataque
 #$a2 -> Indice el atacante (o | 1)
 .data
 	zero: .float 0.0

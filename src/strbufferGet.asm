@@ -1,9 +1,9 @@
-.globl strBufferGet
+#Retorna el elementos segun el indice pasado por parametro
 #a0-> buffer direction
 #a1-> valor del indice que se busca
 #a2-> bytes de separacion
 #v0-> direccion del string encontrado
-
+.globl strBufferGet
 strBufferGet:
     addi $sp, $sp, -16
     sw $t0, 0($sp)

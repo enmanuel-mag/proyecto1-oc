@@ -1,12 +1,13 @@
+#Imprime el nombre, vida y ataque de un pokemon
+#según el formato del proyecto.
+#a0-> direccion del buffer de los datos del pokemon
+#a1-> direccion del buffer vida
+#a2-> direccion del buffer ataque
+#a2-> indice del atacante atacante(0|1)
 .globl printPokeStats
-
 .data
 combateStr0: .asciiz ": Vida: "
 combateStr1: .asciiz " Ataque: "
-#a0-> buffer datos pokemon
-#a1-> buffer vida
-#a2-> buffer ataque
-#a2-> indice atacante (0 si es el primer pokemon , 1 si es el segundo)
 .text
 printPokeStats:
     addi $sp, $sp, -16
@@ -17,7 +18,7 @@ printPokeStats:
     sw $t0, 8($sp)
     sw $ra, 12($sp)
 		
-    		#imprimo el nombre del pokemon atacante
+    	#imprimo el nombre del pokemon atacante
 		li $v0, 4
 		syscall
 		#imprimo ": vida: "
@@ -40,7 +41,6 @@ printPokeStats:
 		l.s $f12, ($a2)
 		li $v0, 2
 		syscall
-    
     
     lw $a0, 0($sp)
     lw $a1, 4($sp)

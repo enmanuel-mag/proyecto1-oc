@@ -1,3 +1,10 @@
+#Obtiene el factor de atacante, recibe fila, columnas.
+#Retorna el factor(float)
+#$a0 -> Direccion de la matriz
+#$a1 -> index de la fila
+#$a2 -> index de la columna
+#retorno
+#$f10 -> numero flotante correspondiente a la posicion indexada
 .data
 lineMatriz: .space 1152
 columnMatriz: .space 1152
@@ -16,12 +23,6 @@ fDos: .float 2.0
 
 .text
 .globl getFactor
-#$a0 -> Direccion de la matriz
-#$a1 -> index de la fila
-#$a2 -> index de la columna
-#retorno
-#$f10 -> numero flotante correspondiente a la posicion indexada
-
 getFactor:
 	addi $sp, $sp, -40
 	sw $a0, 0($sp)
@@ -34,8 +35,6 @@ getFactor:
 	sw $t5, 28($sp)
 	sw $t6, 32($sp)
 	sw $ra, 36($sp)
-	
-	
 	
 	move $t1, $a1
 	move $t2, $a2
@@ -99,7 +98,6 @@ returnUno:
 returnDos:
 	l.s $f10, fDos
 	j exit
-	
 exit:
 	lw $a0, 0($sp)
 	lw $a1, 4($sp)
@@ -113,4 +111,3 @@ exit:
 	lw $ra, 36($sp)
 	addi $sp, $sp, 40
 	jr $ra
-	

@@ -1,5 +1,7 @@
-.globl valInput
+#Se encarga de hacer las validaciones de entrada de datos
 #$a0 -> numero menor que 10 y mayor que 0
+
+.globl valInput
 valInput: 
 
   addi $sp, $sp, -16

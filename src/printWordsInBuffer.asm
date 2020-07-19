@@ -1,3 +1,5 @@
+#Imprime los elementos de un buffer
+#incluido un salto de linea
 #$a0 direccion del buffer
 #$a1 cantidad de elementos #funciona bien no se toca
 #$a2 item inicio -----------empieza en 0

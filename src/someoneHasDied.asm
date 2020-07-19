@@ -1,9 +1,9 @@
+#Retorna 1 ó 0 si algunos de los elementos del buffer es menor a 0
+#incluido el indice del ganador
+#$a0 -> Direccion inicial del buffer de Vida(float)
+#$v0 -> 1 ó 0 si alguno de los elementos es menor o igual a 0
+#$V1 -> Indice el pokemon vencedor
 .globl someoneHasDied
-#Funcion inplace
-#solo funciona con buffer de floats
-#$a0 -> Direccion inicial del buffer de flotantes (Vida)
-#$v0 -> If any value in buffe is 0 return 1 else 0
-#$V1 -> Index of the winner pokemon
 .data
 	zero: .float 0.0
 .text

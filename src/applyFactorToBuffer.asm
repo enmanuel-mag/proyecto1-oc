@@ -1,11 +1,9 @@
-#Funcion inplace
-#solo funciona con buffer de floats
-#$a0 -> Direccion inicial del buffer de flotantes
-#$a1 -> Indice del elemento flotante
-#$f0 -> Direccion inicial del factor flotante
+#Multiplica un factor por uno de los elementos en el buffer pasado como parámetro
+#$a0 -> Direccion de buffer(float)
+#$a1 -> Indice del elemento a multiplicar
+#$f0 -> Direccion del factor(float)
 #Retorno
-#solo por debugg 
-#$f2 -> Direccion inical del producto realizado
+#$f2 -> Direccion del producto(float)
 .globl applyFactorToBuffer
 applyFactorToBuffer:
 	

@@ -1,6 +1,8 @@
-.globl strIsDigit
+# Retorna 1 ó 0 si el string del parámetro esta compuesto por digitos 
 #$a0 -> direccion de string
 #$v0 -> 1 si todo el string esta compuesto por digitos, 0 caso contrario.
+
+.globl strIsDigit
 strIsDigit:
 	addi $sp, $sp, -24  #(6*4)
     	sw $t0, 0($sp)

@@ -1,8 +1,4 @@
-#Funcion inplace
-#solo funciona con buffer de floats
-#$a0 -> Direccion inicial del buffer de flotantes (Vida)
-#$v0 -> If any value in buffe is 0 return 1 else 0
-#$V1 -> Index of the non dead pokemon
+#Archivo que nos ayuda a hacer depuración a la función referida
 .data
 	zero: .float 0.0
 	arr: .float 0.0, 1.0

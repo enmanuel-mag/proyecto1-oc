@@ -1,4 +1,5 @@
-.globl stringSplitBy
+#Retorna un buffer con copias de elementos encontrados 
+#dividos por un separador 
 #$a0 -> Direccion del string
 #$a1 -> direccion del buffer para los elementos(quemado)
 #$a2 -> separator char
@@ -6,6 +7,8 @@
 #retorno
 #$v0 -> direccion del buffer lleno
 #$v1 -> elementos copiados
+
+.globl stringSplitBy
 stringSplitBy:
 
 	addi $sp, $sp, -36

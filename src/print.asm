@@ -1,3 +1,4 @@
+#Funcion dada de baja
 #$a0->cadena de texto a imprimir por pantalla
 .text
 .globl print

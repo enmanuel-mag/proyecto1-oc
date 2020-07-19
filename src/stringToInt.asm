@@ -1,6 +1,8 @@
-.globl stringToInt
+#Retorna un entero equivalente del string pasado por parametro
 #a0 direccion del string
 #v0 entero equivalente
+
+.globl stringToInt
 stringToInt:
 	addi $sp, $sp, -44
 	sw $t0, 0($sp)

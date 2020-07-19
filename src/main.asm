@@ -6,11 +6,9 @@ input: .asciiz "Ingrese un numero para el primer Pokemon (del 1 al 10)"
 bufferInput: .space 64
 input2: .asciiz "Ingrese un numero para el segundo Pokemon (del 1 al 10)"
 bufferInput2: .space 64
-inputError: .asciiz "Error, por favor ingrese un número válido (1 al 11):"
+inputError: .asciiz "Error, por favor ingrese un numero valido (1 al 11):"
 combatientesStr0: .asciiz "Combatientes: "
 combatientesStr1: .asciiz " vs. "
-#combateStr0: .asciiz ": Vida: "
-#combateStr1: .asciiz " Ataque: "
 combateStr2: .asciiz " ataca a "
 combateStr3: .asciiz "Resultado del ataque:\n"
 combateStr4: .asciiz " es el ganador!"
@@ -19,11 +17,6 @@ onlyTypesPath_j: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\pr
 onlyTypesPath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\types.txt"
 onlyTypeBuffer: .space 130
 onlyTypeArray: .space 1152
-
-pokeMatrixPath_j: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\data\\matriz.txt"
-pokeMatrixPath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\matriz.txt"
-pokeMatrixBuffer: .space 790
-pokeMatrixArray: .space 1152
 
 pokeTypePath_j: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\data\\pokeTypes.txt"
 pokeTypePath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\pokeTypes.txt"
@@ -63,19 +56,6 @@ main:
 	li $a3, 18
 	jal stringSplitBy
 	
-	#Lectura del archivo matrix
-	la $a0, pokeMatrixPath_j
-	la $a1, pokeMatrixBuffer
-	li $a2, 790
-	jal read
-	
-	#Creacion del array con el contenido de la matrix
-	la $a0, pokeMatrixBuffer
-	la $a1, pokeMatrixArray
-	li $a2, '\n'
-	li $a3, 18
-	jal stringSplitBy
-	
 	#Lectura del archivo pokeTypes
 	la $a0, pokeTypePath_j
 	la $a1, pokeTypeBuffer
@@ -94,7 +74,7 @@ main:
 	syscall
 	jal printLn
 	
-	#Se obtiene el número aleatorio
+	#Se obtiene el nï¿½mero aleatorio
 	jal random
 	move $a0, $v0
 	#guardo el aleatorio en el buffer datos importantes, en la posicion 0 
@@ -141,7 +121,7 @@ loopMsg:
 	jal printLn
 	j loop
 continue:
-	#Valido si se escogió 11, si es así goto exit
+	#Valido si se escogiï¿½ 11, si es asï¿½ goto exit
 	la $a0, bufferInput
 	jal stringToInt
 	beq $v0, 11, exit
@@ -171,7 +151,7 @@ loopMsg2:
 	j loop2
 	
 continue2:
-	#Valido si se escogió 11, si es así goto exit
+	#Valido si se escogiï¿½ 11, si es asï¿½ goto exit
 	la $a0, bufferInput2
 	jal stringToInt
 	beq $v0, 11, exit
@@ -344,7 +324,7 @@ continue2:
 	mov.s $f0, $f10
 	jal applyFactorToBuffer
 	#--------------------------------
-	# En este punto el arreglo de ataques ya está con el factor y listo para usarse
+	# En este punto el arreglo de ataques ya estï¿½ con el factor y listo para usarse
 	
 	#Empieza la batalla
 	li $t0, 0 # es el 0 en ascci

@@ -1,8 +1,10 @@
-.globl read
+# Lee las lineas de un archivo y las guarda en un buffer
 # $a0 
 # $a1 -> buf
 # $a2 -> tamaño del b
 # $v0 -> buffer con el c
+
+.globl read
 read:
 	addi $sp, $sp, -32
 	sw $t0, 0($sp)

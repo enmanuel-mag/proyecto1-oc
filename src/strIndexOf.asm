@@ -1,17 +1,10 @@
+#Retorna el indice donde se encuentra el string dentro del buffer
+#a0-> Direccion del buffer(String)
+#a1-> Direcion del string
+#v0-> Indice del elemento encontrado
+#v1-> Direccion del string encontrado
+
 .globl strIndexOf
-
-#a0-> buffer de string
-#a1-> dirrecion del string
-#v0-> indice
-#v1-> direccion donde encuentra el objetivo dle buffer
-
-
-#$a0 direccion del buffer
-#$a1 cantidad de elementos
-#$a2 item inicio -----------empieza en 0
-
-
-
 strIndexOf:
 
 	addi $sp, $sp, -20

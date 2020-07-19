@@ -1,3 +1,4 @@
+#Archivo que nos ayuda a hacer depuración a la función referida
 .data
 	userInput:	.space 20
 .text

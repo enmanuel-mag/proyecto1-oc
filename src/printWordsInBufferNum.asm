@@ -1,9 +1,9 @@
+#Imprime los elementos de un buffer con numeración
+#$a0 direccion del buffer
+#$a1 cantidad de elementos
+#$a2 indice inicio(0)
 .data
 sep: .asciiz "."
-
-#$a0 direccion del buffer
-#$a1 cantidad de elementos #funciona bien no se toca
-#$a2 item inicio -----------empieza en 0
 .text
 .globl printWordsInBufferNum
 

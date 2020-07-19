@@ -1,8 +1,8 @@
-.globl stringCompare
-
+# Retorna 1 ó 0 si los strings pasados por parametros son iguales
 #$a0 -> direccion string 1
 #$a1 -> direccion string 2
-#$v0 -> 1 equals; 0 else
+#$v0 -> 1 ó 0
+.globl stringCompare
 stringCompare:
 	addi $sp, $sp, -20
 	sw $a0, 0($sp)

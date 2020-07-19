@@ -1,3 +1,5 @@
+#Retorna la direccion de la copia de un string
+#desde el inicio de la direccion hasta la posición de un separador
 #$a0 -> direccion string 
 #$a1 -> Copybuffer
 #$a2 -> Caracter hasta el cual buscar: caracteres $zero -> \0 ; \n
