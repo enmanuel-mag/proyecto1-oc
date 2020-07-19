@@ -17,9 +17,6 @@ printWordsInBuffer:
 	sw $a1, 20($sp)
 	sw $a2, 24($sp)
 	sw $ra, 28($sp)
-	
-#	sll $t0, $a2, 5
-#	add $a0, $a0, $t0
 
 	li $t0, 0 #elementos impresos
 	li $t2, 0 #puntero del buffer
@@ -31,9 +28,9 @@ printWordsInBuffer:
 		sll $t2, $t0, 6
 		add $a0, $t3, $t2
 		
-		slt $t1, $t0, $a2 #comparacion por piso
+		slt $t1, $t0, $a2 
 		beq $t1, 1, fueraRango
-		slt $t1, $a1, $t0#comparacion por techo
+		slt $t1, $a1, $t0
 		beq $t1, 1, fueraRango
 		
 		li $v0, 4

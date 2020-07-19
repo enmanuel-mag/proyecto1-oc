@@ -19,13 +19,13 @@ someoneHasDied:
 	la  $t0, zero
 	l.s $f3, ($t0)
 	
-	l.s $f0 ($a0)# cargo el float deseado
-	l.s $f1 4($a0)# cargo el float deseado
+	l.s $f0 ($a0)
+	l.s $f1 4($a0)
 	
-	c.le.s $f0, $f3 #guarda en coproc un bit true o false
-	bc1t firstPokeHasDied #move to saveNewValue if coproc is true
-	c.le.s $f1, $f3 #guarda en coproc un bit true o false
-	bc1t secondPokHasDied #move to saveNewValue if coproc is true
+	c.le.s $f0, $f3 
+	bc1t firstPokeHasDied 
+	c.le.s $f1, $f3 
+	bc1t secondPokHasDied 
 	j exit
 	firstPokeHasDied:
 	li $v0, 1

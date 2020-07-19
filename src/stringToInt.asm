@@ -19,9 +19,9 @@ stringToInt:
 
 	la $t3, ($a0)
 	li $t2, 0
-	li $t7, 0 #acumulador final
+	li $t7, 0 
 	contarCaracteres:
-		li $t0, 0 #indices donde hay digitos
+		li $t0, 0 
 		loop:	
 			add $t2, $t0, $t3 
 			lb $t1, ($t2)
@@ -33,18 +33,17 @@ stringToInt:
 			j loop
 	acumulando:
 		addi $t0, $t0, -1
-		li $t1, 0 #nueva iteracion
-		li $t2, 10#variable statica
-		move $a2, $t0 #respaldo de $t0 o sea el ultimo indice del string
+		li $t1, 0 
+		li $t2, 10
+		move $a2, $t0 
 		loop2:	
 			slt $t4, $a2, $t1 
 			beq $t4, 1, endStringToInt
 			
 			add $t5, $t1, $t3 
 			lb $t6, ($t5)
-			addi $t6, $t6, -48 #convierto a int
-			#saco el multiplicador
-			#se esta multiplicando mal, sol: crear potencia 
+			addi $t6, $t6, -48 
+			
 			move $a0, $t2
 			move $a1, $t0
 			jal powerOf
@@ -73,16 +72,15 @@ stringToInt:
 		jr $ra
 			
 isDigit:
-	#Reservar memoria
-    	addi $sp, $sp, -12  #(1*4)
+		addi $sp, $sp, -12  
     	sw $t0, 0($sp)
     	sw $a0, 4($sp)
     	sw $ra, 8($sp)
 	
 	li  $t0, '0'
-	bltu   $a0 ,$t0, notdig        # Jump if char < '0'
+	bltu   $a0 ,$t0, notdig
 	li $t0, '9'
-	bltu   $t0 ,$a0, notdig       # Jump if '9' < char
+	bltu   $t0 ,$a0, notdig
 	
 	li $t0, 1
     	move $v0, $t0
@@ -109,7 +107,6 @@ powerOf:
 	li $t1, 1
 	bne $a1, 0, while
 	
-	#move $v0, $t1
 	j exit 
 	
 	while:
@@ -128,4 +125,3 @@ powerOf:
 		lw $t1, 12($sp)
 		addi $sp, $sp, 16
 		jr $ra
-					

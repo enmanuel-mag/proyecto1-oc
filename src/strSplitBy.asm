@@ -22,24 +22,24 @@ stringSplitBy:
 	sw $t3, 28($sp)
 	sw $ra, 32($sp)
 	
-	li $t0, 0 #cantidad de elemetnos copiados
-	li $t2, 0 #indice del buffer
-	la $t3, ($a1) #respaldo la direccion del buffer
+	li $t0, 0 
+	li $t2, 0 
+	la $t3, ($a1) 
 	while:
 		slt $t1, $t0, $a3
 		beq $t1, $0, elementosCopiados
 		
-		sll $t2, $t0, 6 	#nuevo indice del buffer (multiplo de 4)
-		add $a1, $t3, $t2	#preparo la nueva direccion
+		sll $t2, $t0, 6
+		add $a1, $t3, $t2
 		jal stringSection
 		#preparo la sgt llamda
-		la $a0, ($v1)	#avanza la direccion del string
-		addi $t0, $t0, 1 #aumento en 1 los elementos copiados
-		#addi $t2, $t2, 1 #avanza el indice del buffer
+		la $a0, ($v1)	
+		addi $t0, $t0, 1 
+		#addi $t2, $t2, 1 
 		j while
 	elementosCopiados:
-		la $v0, ($t3) #direccion del buffer donde estan todos los elementos
-		move $v1, $t0 #total de elementos copiados 
+		la $v0, ($t3) 
+		move $v1, $t0 
 		
 		lw $a0, 0($sp)
 		lw $a1, 4($sp)
@@ -52,4 +52,3 @@ stringSplitBy:
 		lw $ra, 32($sp)
 		addi $sp, $sp, 36
 		jr $ra
-	

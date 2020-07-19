@@ -7,7 +7,7 @@
 #$v1 -> direccion despues de haber encontrado el separdor 
 .globl stringSection
 
-stringSection:####################No se puede copiar un string de exceda la capacidad de un registro
+stringSection:
 	addi $sp, $sp, -28
 	sw $a0, 0($sp)
 	sw $a1, 4($sp)
@@ -20,25 +20,25 @@ stringSection:####################No se puede copiar un string de exceda la capa
 	la $t1, ($a1)
 	li $t2, 13
 	copyCharLoop:
-		lb      $t0,($a0)                   # get next char from str1
+		lb      $t0,($a0)                   
 		
-		beq     $t0,$a2,separadorEncontrado    # encontro el separador
-		beq     $t0,$t2,finalDeLinea           # enter caracter (0d)
-		beq     $t0,$zero,separadorEncontrado  # final del string (0) nunca debe salir
+		beq     $t0,$a2,separadorEncontrado    
+		beq     $t0,$t2,finalDeLinea           
+		beq     $t0,$zero,separadorEncontrado  
 		
-		sb      $t0, ($a1)                   # store next char to $t1
+		sb      $t0, ($a1)                   
 	
-	 	addi    $a0,$a0,1                   # point to next char
-	 	addi    $a1,$a1,1                   # point to next char
+	 	addi    $a0,$a0,1                   
+	 	addi    $a1,$a1,1                   
 		j copyCharLoop
 	finalDeLinea:
 		addi    $a0,$a0,1	
 		
 	separadorEncontrado:
-		addi    $a0,$a0,1       # me salto el nullo y entrego la nueva direccion
-		sb      $0, ($a1)       # store 0\ fin de string
-		la $v0, ($t1)		#retorna la direccion del string coppia
-		la $v1, ($a0)		#retorna la direccion del string original avanzado 1 caracter
+		addi    $a0,$a0,1       
+		sb      $0, ($a1)       
+		la $v0, ($t1)		
+		la $v1, ($a0)		
 	
 		lw $a0, 0($sp)
 		lw $a1, 4($sp)

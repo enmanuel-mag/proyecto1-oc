@@ -17,11 +17,11 @@ strIsDigit:
     	li $t3, 0 #indice del char iterado
     	li $t2, 1 #de entrada asumo que es digit
     do:
-    	# obtener el valor
-    	add $t1, $t3, $t0
+    	
+		add $t1, $t3, $t0
     	lb $t1, 0($t1)
-    	beq $t1, 13, endStr #\d
-    	beq $t1, 10, endStr #\n
+    	beq $t1, 13, endStr
+    	beq $t1, 10, endStr
     	
     	move $a0, $t1  	
     while:
@@ -50,15 +50,15 @@ strIsDigit:
  
 isDigit:
 	#Reservar memoria
-    	addi $sp, $sp, -12  #(1*4)
+    	addi $sp, $sp, -12  
     	sw $t0, 0($sp)
     	sw $a0, 4($sp)
     	sw $ra, 8($sp)
 	
 	li  $t0, '0'
-	bltu   $a0 ,$t0, notdig        # Jump if char < '0'
+	bltu   $a0 ,$t0, notdig        
 	li $t0, '9'
-	bltu   $t0 ,$a0, notdig       # Jump if '9' < char
+	bltu   $t0 ,$a0, notdig       
 	
 	li $t0, 1
     	move $v0, $t0

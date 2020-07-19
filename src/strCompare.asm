@@ -10,22 +10,22 @@ stringCompare:
 	sw $t0, 8($sp)
 	sw $t1, 12($sp)
 	sw $ra, 16($sp)
-# string compare loop (just like strcmp)
+
 	cmploop:
-	lb      $t0,($a0)                   # get next char from str1
-	lb      $t1,($a1)                   # get next char from str2
-	bne     $t0,$t1,cmpne               # are they different? if yes, fly
+	lb      $t0,($a0)                   
+	lb      $t1,($a1)                   
+	bne     $t0,$t1,cmpne               
 	
-	beq     $t1,$zero,cmpeq             # at End Of String? yes, fly (strings equal)
+	beq     $t1,$zero,cmpeq             
 	
- 	addi    $a0,$a0,1                   # point to next char
-	addi    $a1,$a1,1                   # point to next char
+ 	addi    $a0,$a0,1                   
+	addi    $a1,$a1,1                   
 	j cmploop	
-# strings are _not_ equal -- send message
+
 	cmpne:
 	li $v0, 0
 	j endStringCompare
-# strings _are_ equal -- send message
+
 	cmpeq:
 	li $v0, 1
 

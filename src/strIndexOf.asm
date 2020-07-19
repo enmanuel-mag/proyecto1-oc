@@ -14,26 +14,22 @@ strIndexOf:
 	sw $a0, 12($sp)
 	sw $ra, 16($sp)
 
-	li $t0, 0 #elementos impresos
-	li $t2, 0 #indice el buffer
+	li $t0, 0 
+	li $t2, 0 
 	la $t1, ($a0)
 Loop: 
-		#slt $t1, $t0, $a0
-		#bne $t1, 1, endLoop 
-
+		
 		sll $t2, $t0, 6
 		add $a0, $t1, $t2
 		    
-    		jal stringCompare
-    		beq $v0, 1, endLoop
+    	jal stringCompare
+    	beq $v0, 1, endLoop
 
 		addi $t0, $t0, 1
-		
 		j Loop
-
 endLoop:
-    		move $v0, $t0
-    		la $v1, ($a0)
+    	move $v0, $t0
+    	la $v1, ($a0)
 
 		lw $t0, 0($sp)
 		lw $t1, 4($sp)
