@@ -35,8 +35,9 @@ stringSection:
 		addi    $a0,$a0,1	
 		
 	separadorEncontrado:
-		addi    $a0,$a0,1       
-		sb      $0, ($a1)       
+		addi    $a0,$a0,1  
+		   
+		sb $s0, ($a1)  
 		la $v0, ($t1)		
 		la $v1, ($a0)		
 	

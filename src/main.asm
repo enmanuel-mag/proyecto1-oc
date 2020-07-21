@@ -15,7 +15,7 @@ combateStr4: .asciiz " es el ganador!"
 
 onlyTypesPath_j: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\data\\types.txt"
 onlyTypesPath: .asciiz "C:\\code\\oc\\proyecto1-oc\\src\\data\\types.txt"
-onlyTypeBuffer: .space 130
+onlyTypeBuffer: .space 131
 onlyTypeArray: .space 1152
 
 pokeTypePath_j: .asciiz "C:\\Users\\Josue\\Documents\\Organizacion Proyecto\\proyecto1-oc\\src\\data\\pokeTypes.txt"
@@ -76,9 +76,9 @@ main:
 	addi $t0, $t0, 0
 	sw $a0, 0($t0)
 	
-	la $t0, valImportantes #obtengo el random 
-	lw $t0, 0($t0) #limite inferior
-	addi $t1, $a0, 10 #limite superior
+	la $t0, valImportantes
+	lw $t0, 0($t0)
+	addi $t1, $a0, 10
 	
 	la $a0, pokeTypeArray
 	la $a1, ($t1)
@@ -174,9 +174,9 @@ continue2:
 	syscall
 	
 	la $a0, valImportantes
-	lw $a1, 4($a0) #cargo indice
-	la $a0, pokeTypeArray #direccion de buffer
-	li $a2, 64 #bytes de separacion
+	lw $a1, 4($a0)
+	la $a0, pokeTypeArray 
+	li $a2, 64
 	jal strBufferGet
 	la $a0, ($v0)
 	li $v0, 4
@@ -188,7 +188,7 @@ continue2:
 	
 	la $a0, valImportantes
 	lw $a1, 8($a0) 
-	la $a0, pokeTypeArray #direccion de buffer
+	la $a0, pokeTypeArray
 	li $a2, 64 
 	jal strBufferGet
 	la $a0, ($v0)
@@ -216,7 +216,7 @@ continue2:
 	jal strIndexOf
 	
 	la $a0, valImportantes
-	sw $v0, 12($a0)#Guardo el indice donde se encuentra el tipo del primer pokemon
+	sw $v0, 12($a0)
 	
 	la $a0, valImportantes
 	lw $a1, 8($a0) 
