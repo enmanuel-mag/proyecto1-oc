@@ -3,45 +3,46 @@
 #$a1 cantidad de elementos
 #$a2 indice inicio(0)
 .data
-sep: .asciiz "."
+sep: .asciiz ". "
+bufferPrint: .space 64
 .text
 .globl printWordsInBufferNum
 
 printWordsInBufferNum:
 
-	addi $sp, $sp, -40
+	addi $sp, $sp, -44
 	sw $t0, 0($sp)
 	sw $t1, 4($sp)
 	sw $t2, 8($sp)
 	sw $t3, 12($sp)
-	sw $a0, 16($sp)
-	sw $a1, 20($sp)
-	sw $a2, 24($sp)
-	sw $ra, 28($sp)
-	sw $t5, 32($sp)
-	sw $t6, 36($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $a0, 28($sp)
+	sw $a1, 32($sp)
+	sw $a2, 36($sp)
+	sw $ra, 40($sp)
 
 	li $t0, 0 
 	li $t2, 0 
+	li $t5, 1
 	la $t3, ($a0)
+	move $t4, $a1
+	move $t7, $a2
 	printLoop: 
-		slt $t1, $t0, $a1
+		slt $t1, $t0, $t4
 		bne $t1, 1, todosImpresos 
 	if: 
 		sll $t2, $t0, 6
 		add $a0, $t3, $t2
 		
-		slt $t1, $t0, $a2 
+		slt $t1, $t0, $t7
 		beq $t1, 1, fueraRango
-		slt $t1, $a1, $t0
+		slt $t1, $t4, $t0
 		beq $t1, 1, fueraRango
 		
-		la $t5, ($a0)
-
-		sub $t6, $t0, $a2
-		addi $t6, $t6, 1
-
-		move $a0, $t6
+		
+		move $a0, $t5
 		li $v0, 1
 		syscall
 
@@ -49,13 +50,20 @@ printWordsInBufferNum:
 		li $v0, 4
 		syscall
 
-		la $a0, ($t5)
+		add $a0, $t3, $t2
+		la $a1, bufferPrint
+		li $a2, ','
+		jal stringSection
+		#la $a0, ($t5)
+		la $a0, ($v0)
 		li $v0, 4
 		syscall
 		jal printLn
+		addi $t5, $t5, 1
 
 	fueraRango:		
 		addi $t0, $t0, 1
+		
 		j printLoop
 	todosImpresos:
 		la $v0, ($a0)
@@ -63,11 +71,12 @@ printWordsInBufferNum:
 		lw $t1, 4($sp)
 		lw $t2, 8($sp)
 		lw $t3, 12($sp)
-		lw $a0, 16($sp)
-		lw $a1, 20($sp)
-		lw $a2, 24($sp)
-		lw $ra, 28($sp)
-		lw $t5, 32($sp)
-		lw $t6, 36($sp)
-		addi $sp, $sp, 40
+		lw $t4, 16($sp)
+		lw $t5, 20($sp)
+		lw $t6, 24($sp)
+		lw $a0, 28($sp)
+		lw $a1, 32($sp)
+		lw $a2, 36($sp)
+		lw $ra, 40($sp)
+		addi $sp, $sp, 44
 		jr $ra	

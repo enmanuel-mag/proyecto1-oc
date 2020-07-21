@@ -1,7 +1,7 @@
 
 .data
 wel: .asciiz "Bienvenido al sistema de combates Pokemon:"
-salida: .asciiz "11.Salir"
+salida: .asciiz "11. Salir"
 input: .asciiz "Ingrese un numero para el primer Pokemon (del 1 al 10)"
 bufferInput: .space 64
 input2: .asciiz "Ingrese un numero para el segundo Pokemon (del 1 al 10)"
@@ -37,7 +37,7 @@ valImportantes: .word 0,0,0,0,0
 #valImportantes[4] -> index 2st type pokemon in onlyTypeArray
 
 matriz: .asciiz "1,1,1,1,1,0.5,1,0,0.5,1,1,1,1,1,1,1,1,1;2,1,0.5,0.5,1,2,0.5,0,2,1,1,1,1,0.5,2,1,2,0.5;1,2,1,1,1,0.5,2,1,0.5,1,1,2,0.5,1,1,1,1,1;1,1,1,0.5,0.5,0.5,1,0.5,0,1,1,2,1,1,1,1,1,2;1,1,0,2,1,2,0.5,1,2,2,1,0.5,2,1,1,1,1,1;1,0.5,2,1,0.5,1,2,1,0.5,2,1,1,1,1,2,1,1,1;1,0.5,0.5,0.5,1,1,1,0.5,0.5,0.5,1,2,1,2,1,1,2,0.5;0,1,1,1,1,1,1,2,1,1,1,1,1,2,1,1,0.5,1;1,1,1,1,1,2,1,1,0.5,0.5,0.5,1,0.5,1,2,1,1,2;1,1,1,1,1,0.5,2,1,2,0.5,0.5,2,1,1,2,0.5,1,1;1,1,1,1,2,2,1,1,1,2,0.5,0.5,1,1,1,0.5,1,1;1,1,0.5,0.5,2,2,0.5,1,0.5,0.5,2,0.5,1,1,1,0.5,1,1;1,1,2,1,0,1,1,1,1,1,2,0.5,0.5,1,1,0.5,1,1;1,2,1,2,1,1,1,1,0.5,1,1,1,1,0.5,1,1,0,1;1,1,2,1,2,1,1,1,0.5,0.5,0.5,2,1,1,0.5,2,1,1;1,1,1,1,1,1,1,1,0.5,1,1,1,1,1,1,2,1,0;1,0.5,1,1,1,1,1,2,1,1,1,1,1,2,1,1,0.5,0.5;1,2,1,0.5,1,1,1,1,0.5,0.5,1,1,1,1,1,2,2,1"
-
+bufferPokemonName: .space 64
 .text
 .globl main
 main:
@@ -167,33 +167,6 @@ continue2:
 	
 	sw $t2, 8($t0)
 	
-	la $t0, valImportantes
-	
-	la $a0, combatientesStr0
-	li $v0, 4
-	syscall
-	
-	la $a0, valImportantes
-	lw $a1, 4($a0)
-	la $a0, pokeTypeArray 
-	li $a2, 64
-	jal strBufferGet
-	la $a0, ($v0)
-	li $v0, 4
-	syscall
-	
-	la $a0, combatientesStr1
-	li $v0, 4
-	syscall
-	
-	la $a0, valImportantes
-	lw $a1, 8($a0) 
-	la $a0, pokeTypeArray
-	li $a2, 64 
-	jal strBufferGet
-	la $a0, ($v0)
-	li $v0, 4
-	syscall
 	
 	la $a0, valImportantes
 	lw $a1, 4($a0) 
@@ -241,6 +214,32 @@ continue2:
 	la $a0, valImportantes
 	sw $v0, 16($a0)
 	
+	
+	
+	la $a0, combatientesStr0
+	li $v0, 4
+	syscall
+	
+	la $a0, pokeSelected1 
+	li $a1, 0
+	li $a2, 64 
+	jal strBufferGet
+	la $a0, ($v0)
+	li $v0, 4
+	syscall
+	
+	la $a0, combatientesStr1
+	li $v0, 4
+	syscall
+	
+	la $a0, pokeSelected2 
+	li $a1, 0
+	li $a2, 64 
+	jal strBufferGet
+	la $a0, ($v0)
+	li $v0, 4
+	syscall
+	
 	la $a0, valImportantes
 	lw $a1, 12($a0)
 	lw $a2, 16($a0)
@@ -265,22 +264,10 @@ continue2:
 	li $t0, 0 
 	jal printLn
 	golpes:
-		la $a0, pokeSelected1
-		la $a1, lifesPoke
-		la $a2, attacksPoke
-		li $a3, 0
-		jal printPokeStats
 		
-		la $a0, combateStr2
-		li $v0, 4
-		syscall
-		
-		la $a0, pokeSelected2
-		la $a1, lifesPoke
-		la $a2, attacksPoke
-		li $a3, 1
-		jal printPokeStats
-		jal printLn
+		beq $t0, 0 , print1PokeAtaca
+		beq $t0, 1 , print2PokeAtaca
+		continueMain:
 		
 		la $a0, lifesPoke
 		la $a1, attacksPoke
@@ -339,3 +326,44 @@ continue2:
 		exit:
 		li, $v0, 10
 		syscall
+
+
+print1PokeAtaca:
+		la $a0, pokeSelected1
+		la $a1, lifesPoke
+		la $a2, attacksPoke
+		li $a3, 0
+		jal printPokeStats
+		
+		la $a0, combateStr2
+		li $v0, 4
+		syscall
+		
+		la $a0, pokeSelected2
+		la $a1, lifesPoke
+		la $a2, attacksPoke
+		li $a3, 1
+		jal printPokeStats
+		jal printLn
+		
+		j continueMain
+		
+print2PokeAtaca:
+
+		la $a0, pokeSelected2
+		la $a1, lifesPoke
+		la $a2, attacksPoke
+		li $a3, 1
+		jal printPokeStats
+		
+		la $a0, combateStr2
+		li $v0, 4
+		syscall
+		
+		la $a0, pokeSelected1
+		la $a1, lifesPoke
+		la $a2, attacksPoke
+		li $a3, 0
+		jal printPokeStats
+		jal printLn
+		j continueMain
